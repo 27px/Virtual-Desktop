@@ -12,8 +12,12 @@ function setMessage(type,message)
 }
 function parseLatestApps()
 {
-  _("latestApps").value="true";
-  _("menuForm").submit();
+  ajax("latestApps.php",function(){
+    if(this.readyState==4 && this.status==200)
+    {
+      _('resultantcontainer').innerHTML=this.responseText;
+    }
+  });
 }
 function parseCategories()
 {
@@ -46,6 +50,7 @@ function installApp(app,button)
     if(this.readyState==4 && this.status==200)
     {
       var x=JSON.parse(this.responseText);
+      console.log(x);
       if(x.type=="success")
       {
         if(x.message=="Installed")

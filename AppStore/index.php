@@ -22,12 +22,10 @@ if(isset($_POST['logout']))
   }
 }
 $inversion="";
-require_once("../config/root.php");
-if(!@is_dir($dir))
-{
-  $dir=$_SERVER['DOCUMENT_ROOT']."/".$root."User/Desktop/".$_SESSION['Logged'];
-}
+require_once("dir.php");
 require_once("../config/database.php");
+require_once("connect_db.php");
+require_once("app.php");
 ?>
 <html>
 <head>
@@ -71,112 +69,12 @@ function _(id)
       $msgcount++;
       echo "<script>setTimeout(function(){setMessage(\"".$type."\",\"".$message."\");},".($msgcount*1500).");</script>";
     }
-    function getAppsInDirectory($p)
-    {
-      $files='';
-      if($dh=@opendir($p))
-      {
-        while(($file=@readdir($dh))!=false)
-        {
-          if(($file=="." || $file=="..") || $file=="DesktopSettings.fcz" )
-          {
-            //Do Nothing
-            continue;
-          }
-          else if(!@is_dir($p.$file))
-          {
-            if(end(explode(".",$file))=="fcz")
-            {
-              $files[]=$file;
-            }
-          }
-        }
-        @closedir($dh);
-        if(is_array($files))
-        {
-          return $files;
-        }
-        else
-        {
-          return 0;
-        }
-      }
-    }
+    require_once("getAppsInDirectory.php");
     function displayForm($status,$v)
     {
       echo "<script>_(\"resultantcontainer\").innerHTML=\"<form id='xbuild' class='build' method='POST' action='".$_SERVER['PHP_SELF']."'><table class='full'><tr><td>App Name</td><td> : </td><td><input class='wp' type='name' name='appregname' id='appregname' required placeholder='App Name' autocomplete='off' value='".$v."' onkeypress='avail(event);'></td></tr><tr><td colspan='3'><div class='appNameStatus'>".$status."</div><button type='button' class='greenButton fr' onclick='checkAvailability();'>Check</button></td></tr></table></form>\";</script>";
     }
-    function checkInstalledApp()
-    {
-      global $dir;
-      global $inversion;
-      $r[]=5;//File Manager // Already Installed
-      $v[]=1;//File Manager // Version
-      $apps=getAppsInDirectory($dir);
-      if(!is_array($apps))
-      {
-        $inversion[]=$r;
-        $inversion[]=$v;
-        return $inversion;
-      }
-      $n=count($apps);
-      $i=0;
-      while($i<$n)
-      {
-        $file=$apps[$i];
-        if(@file_exists($dir.$file))
-        {
-          $f=@fopen($dir.$file,"r");
-          while(!@feof($f))
-          {
-            $fx=@fgets($f);
-            $fxa=explode("\"",$fx);
-            if($fxa[1]=="id" && $fxa[3]!="")
-            {
-              $r[]=$fxa[3];
-            }
-            else if($fxa[1]=="version" && $fxa[3]!="")
-            {
-              $v[]=$fxa[3];
-            }
-          }
-          @fclose($f);
-        }
-        $i++;
-      }
-      $inversion[]=$r;
-      $inversion[]=$v;
-      return $inversion;
-    }
-    function uninstallApp($app)
-    {
-      global $dir;
-      global $msgcount;
-      global $conn;
-      $result=$conn->query("SELECT * FROM Apps WHERE ID=".$app." LIMIT 1");
-      if(mysqli_num_rows($result)>0)
-      {
-        if($row=mysqli_fetch_row($result))
-        {
-          $app=$row[1];
-          if(@file_exists($dir.$app.".fcz"))
-          {
-            if(@unlink($dir.$app.".fcz"))
-            {
-              putMessage("success",$app." Uninstalled.");
-            }
-            else
-            {
-              putMessage("error",$app." could'nt be Uninstalled.");
-            }
-          }
-          else
-          {
-            putMessage("error","App not found.");
-          }
-        }
-      }
-    }
+    require_once("checkInstalledApp.php");
     function showUpdates()
     {
       global $conn;
@@ -280,56 +178,6 @@ function _(id)
       }
     }
     checkInstalledApp();
-    $conn=new mysqli($servername,$username,$password);
-    if(mysqli_connect_error())
-    {
-      putMessage("error","Connection Error : ".mysqli_connect_error());
-      die();
-    }
-    if(empty(mysqli_fetch_array($conn->query("SHOW DATABASES LIKE 'cloud'"))))
-    {
-      putMessage("error","Database not Found.");
-      die();
-    }
-    if(!($conn->query("USE ".$database)==true))
-    {
-      putMessage("error","Couldn't change Database.");
-      die();
-    }
-    if(empty(mysqli_fetch_array($conn->query("SHOW TABLES LIKE 'Apps'"))))
-    {
-      putMessage("error","Table not Found.");
-      die();
-    }
-    function app($row,$x=0)
-    {
-      global $inversion;
-      echo "<div class='result'><span class='icon' style='background-image:url(../AppStore/icon/".$row[9].");'></span>";
-      echo "<p class='name'>".$row[1]."</p><p class='author'>";
-      if($x!=1)
-      echo $row[3];//User Name
-      else
-      echo $row[4];//App Status
-      echo "</p><p class='description'>".$row[5]."</p>";
-
-      if(!in_array($row[0],$inversion[0]))
-      {
-        echo "<div class='appbutton install' onclick=\"installApp('".$row[0]."',this);\">Install</div>";
-      }
-      else if(in_array($row[0],$inversion[0]) && $row[0]=="5")//File Manager System Protected
-      {
-        echo "<div class='appbutton sysprotected'>Default</div>";
-      }
-      else
-      {
-        if($inversion[1][array_search($row[0],$inversion[0])]!=$row[17])
-        {
-          echo "<div class='appbuttontwo update' onclick=\"installApp('".$row[0]."',this);\">Update</div>";
-        }
-        echo "<div class='appbutton uninstall' onclick=\"uninstallApp('".$row[0]."',this);\">Uninstall</div>";
-      }
-      echo "</div>";
-    }
     function appsByME()
     {
       global $conn;
@@ -414,21 +262,9 @@ function _(id)
     }
     else if(isset($_POST['latestApps']) && !empty($_POST['latestApps']))
     {
-      if($_POST['latestApps']=="true")
+      if($_POST['latestApp']=="true")
       {
-        $result=$conn->query("SELECT * FROM Apps WHERE Status='Approved' ORDER BY ID desc LIMIT 25");
-        $n=mysqli_num_rows($result);
-        if($n<=0)
-        {
-          echo "<div class='resultError'>Sorry No Apps In the Store.</div>";
-        }
-        else
-        {
-          while($row=mysqli_fetch_row($result))
-          {
-            app($row);
-          }
-        }
+        require_once("latestApps.php");
       }
     }
     else if(isset($_POST['getcategory']) && !empty($_POST['getcategory']))
