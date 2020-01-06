@@ -1,6 +1,10 @@
 <?php
   if($dir=="")
   {
+    if(!isset($_SESSION['Logged']))
+    {
+      session_start();
+    }
     $dir=$_SESSION['Logged'];
   }
   $root="Root/fCLOUD/";//Path of Project from Server Root

@@ -129,54 +129,6 @@ function _(id)
         }
       }
     }
-    function showMyApps()
-    {
-      global $conn;
-      global $inversion;
-      $x=count($inversion[0]);
-      if($x<=0)
-      {
-        echo "<div class='resultError'>No Apps Installed.</div>";
-      }
-      else
-      {
-        $i=0;
-        $list="(0";
-        while($i<$x)
-        {
-          $list.=",".$inversion[0][$i];
-          $i++;
-        }
-        $list.=")";
-        $result=$conn->query("SELECT * FROM Apps WHERE ID IN ".$list."");
-        $n=mysqli_num_rows($result);
-        if($n<=0)
-        {
-          echo "<div class='resultError'>No Apps Installed.</div>";
-        }
-        else
-        {
-          while($row=mysqli_fetch_row($result))
-          {
-            echo "<div class='result'><span class='icon' style='background-image:url(../AppStore/icon/".$row[9].");'></span>";
-            echo "<p class='name'>".$row[1]."</p><p class='author'>".$row[3]."</p><p class='description'>".$row[5]."</p>";
-            if(in_array($row[0],$inversion[0]) && $row[0]=="5")//File Manager System Protected
-            {
-              echo "<div class='appbutton sysprotected'>Default</div>";
-            }
-            else
-            {
-              if($inversion[1][array_search($row[0],$inversion[0])]!=$row[17])
-              {
-                echo "<div class='appbuttontwo update' onclick=\"installApp('".$row[0]."',this);\">Update</div>";
-              }
-              echo "<div class='appbutton uninstall' onclick=\"uninstallApp('".$row[0]."',this);\">Uninstall</div>";
-            }
-            echo "</div>";
-          }
-        }
-      }
-    }
     checkInstalledApp();
     function appsByME()
     {
@@ -259,61 +211,6 @@ function _(id)
           app($row);
         }
       }
-    }
-    else if(isset($_POST['latestApps']) && !empty($_POST['latestApps']))
-    {
-      if($_POST['latestApp']=="true")
-      {
-        require_once("latestApps.php");
-      }
-    }
-    else if(isset($_POST['getcategory']) && !empty($_POST['getcategory']))
-    {
-      if($_POST['getcategory']=="true")
-      {
-        $result=$conn->query("SELECT Category FROM Apps WHERE Status='Approved' GROUP BY Category LIMIT 250");
-        $n=mysqli_num_rows($result);
-        if($n<=0)
-        {
-          echo "<div class='resultError'>Sorry No Categories are Available.</div>";
-        }
-        else
-        {
-          while($row=mysqli_fetch_row($result))
-          {
-            if($row[0]!="")
-            echo "<div class='category' onclick=\"getAppsByCategory('".$row[0]."');\">".$row[0]."</div>";
-          }
-        }
-      }
-      else
-      {
-        $result=$conn->query("SELECT * FROM Apps WHERE Category LIKE '".$_POST['getcategory']."' AND Status='Approved' LIMIT 25");
-        $n=mysqli_num_rows($result);
-        if($n<=0)
-        {
-          echo "<div class='resultError'>Sorry No Categories are Available.</div>";
-        }
-        else
-        {
-          while($row=mysqli_fetch_row($result))
-          {
-            app($row);
-          }
-        }
-      }
-    }
-    else if(isset($_POST['install']) && !empty($_POST['install']))
-    {
-      installApp($_POST['install']);
-    }
-    else if(isset($_POST['uninstall']) && !empty($_POST['uninstall']))
-    {
-      uninstallApp($_POST['uninstall']);
-    }
-    else if(isset($_POST['myApps']) && !empty($_POST['myApps']))
-    {
-      showMyApps();
     }
     else if(isset($_POST['getOwnApps']) && $_POST['getOwnApps']=="true")
     {
@@ -683,9 +580,6 @@ function _(id)
   </div>
 </div>
 <form class="hiddenForn" id="menuForm" method="POST" action="<?php echo $_SERVER['PHP_SELF']; ?>">
-  <input type="hidden" id="latestApps" name="latestApps" value="">
-  <input type="hidden" id="getcategory" name="getcategory" value="">
-  <input type="hidden" id="myApps" name="myApps" value="">
   <input type="hidden" id="regApp" name="regApp" value="">
   <input type="hidden" id="getOwnApps" name="getOwnApps" value="">
   <input type="hidden" id="getUpdates" name="getUpdates" value="">

@@ -7,7 +7,6 @@
     {
       $inversion=array();
       $inversion=checkInstalledApp();
-
     }
     echo "<div class='result'><span class='icon' style='background-image:url(../AppStore/icon/".$row[9].");'></span>";
     echo "<p class='name'>".$row[1]."</p><p class='author'>";

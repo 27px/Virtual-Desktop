@@ -21,13 +21,21 @@ function parseLatestApps()
 }
 function parseCategories()
 {
-  _("getcategory").value="true";
-  _("menuForm").submit();
+  ajax("getCategoryList.php",function(){
+    if(this.readyState==4 && this.status==200)
+    {
+      _('resultantcontainer').innerHTML=this.responseText;
+    }
+  });
 }
 function getAppsByCategory(cat)
 {
-  _("getcategory").value=cat;
-  _("menuForm").submit();
+  ajax("getCategory.php?getcategory="+cat,function(){
+    if(this.readyState==4 && this.status==200)
+    {
+      _('resultantcontainer').innerHTML=this.responseText;
+    }
+  });
 }
 function ajax(url,callback)
 {
@@ -50,7 +58,6 @@ function installApp(app,button)
     if(this.readyState==4 && this.status==200)
     {
       var x=JSON.parse(this.responseText);
-      console.log(x);
       if(x.type=="success")
       {
         if(x.message=="Installed")
@@ -85,13 +92,15 @@ function uninstallApp(app,button)
       }
     }
   });
-  // _("uninstall").value=app;
-  // _("menuForm").submit();
 }
 function showInstalledApps()
 {
-  _("myApps").value="true";
-  _("menuForm").submit();
+  ajax("installedApps.php",function(){
+    if(this.readyState==4 && this.status==200)
+    {
+      _('resultantcontainer').innerHTML=this.responseText;
+    }
+  });
 }
 function byte_unit_convert(b)
 {
