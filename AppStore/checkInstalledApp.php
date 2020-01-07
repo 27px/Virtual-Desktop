@@ -5,7 +5,10 @@ function checkInstalledApp()
     global $dir;
     if($dir=="")
     {
-      session_start();
+      if(!isset($_SESSION['Logged']))
+      {
+        session_start();
+      }
       require_once("dir.php");
     }
     global $inversion;

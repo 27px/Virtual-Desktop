@@ -1,4 +1,3 @@
-
 *
 {
   margin:0;
@@ -20,15 +19,15 @@ body::-webkit-scrollbar
 }
 div.s
 {
-  width:calc(100% - 20px);
+  width:100%;
   min-width:650px;
-  height:65px;
-  padding:10px;
-  background-color:#6b1b78;
+  height:85px;
+  box-sizing:content-box;
+  background-color:#7C2790;
   overflow:hidden;
   box-shadow:0px 0px 10px 3px #000000;
-  z-index:1000;
-  position:
+  z-index:10;
+  position:absolute;
   top:0;
   left:0;
 }
@@ -39,14 +38,15 @@ div.result,div.resultError
   height:auto;
   min-height:100px;
   background-color:rgba(255,255,255,0.3);
-  margin-top:5px;
   padding:10px;
   border:1px solid #FFFFFF;
   border-radius:5px;
   position:relative;
   box-shadow: 0px 0px 10px 1px #000000;
+  margin-top:5px;
   margin-bottom:20px;
-  margin-left:20px;
+  margin-left:10px;
+  margin-right:20px;
   overflow:hidden;
 }
 div.resultError
@@ -117,6 +117,7 @@ div.title
   float:left;
   font-size:20px;
   padding:20px;
+  margin:10px;
   position:relative;
 }
 div.title::before,div.title::after
@@ -145,16 +146,18 @@ div.title::before
 div.searchcontainer
 {
   width:400px;
+  height:100%;
   float:right;
   display:flex;
   position:relative;
   flex-wrap:nowrap;
   padding:5px;
-  box-shadow:0px 0px 10px 1px rgba(255,255,255,0.3) inset;
+  box-shadow:0px 0px 10px 1px rgba(0,0,0,0.3) inset;
   border-radius:200px;
   box-sizing:border-box;
-  border:1px solid #808080;
+  border:1px solid #9C27B0;
   margin-right:0;
+  transition:0.5s border;
 }
 div.searchcontainer:hover
 {
@@ -174,12 +177,15 @@ div.searchcontainer input[type="name"]
   font-size:20px;
   font-family:serif;
   height:50%;
-  width:100%;
+  width:calc(100% - 20px);
   color:#FFFFFF;
   background-color:transparent;
   border:none;
   padding-left:30px;
   padding-right:5px;
+  position:absolute;
+  top:50%;
+  transform:translateY(-50%);
 }
 div.searchcontainer input[type="name"]::placeholder
 {
@@ -189,22 +195,31 @@ div.searchcontainer input[type="name"]:focus,button:focus
 {
   outline:none;
 }
+div.searchcontainer input[type="name"]::selection
+{
+  background-color:#E1BEE7;
+}
 div.subcontainer
 {
-  height:100%;
-  padding-top:10px;
+  height:50%;
+  position:absolute;
+  top:50%;
+  right:0;
+  transform:translateY(-50%);
+  margin-right:10px;
 }
 input[type="submit"]
 {
+  position:absolute;
+  height:100%;
+  width:100%;
   font-size:20px;
   font-family:serif;
-  height:50%;
-  width:100%;
   display:block;
   border:1px solid #000000;
   border-radius:5px;
-  margin-top:5px;
-	background-color:rgba(255,255,255,0.4);
+  background:linear-gradient(135deg,#AB47BC,#AB47BC,#AB47BC);
+  transition:0.5s background,0.8s border,0.8s color;
 }
 input[type="submit"]:hover
 {
@@ -218,6 +233,7 @@ input[type="submit"]:focus
 }
 div.buttoncontainer
 {
+  position:relative;
   height:100%;
   width:150px;
   min-width:150px;

@@ -10,7 +10,6 @@
     $inversion=array();
     $inversion=checkInstalledApp();
   }
-  $apps=getAppsInDirectory($dir);
   $x=count($inversion[0]);
   if($x<=0)
   {

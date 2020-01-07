@@ -23,7 +23,6 @@ if(isset($_POST['logout']))
 }
 $inversion="";
 require_once("dir.php");
-require_once("../config/database.php");
 require_once("connect_db.php");
 require_once("app.php");
 ?>
@@ -63,90 +62,9 @@ function _(id)
 </head>
 <body oncontextmenu="return false">
   <?php
-    function putMessage($type,$message)
-    {
-      global $msgcount;
-      $msgcount++;
-      echo "<script>setTimeout(function(){setMessage(\"".$type."\",\"".$message."\");},".($msgcount*1500).");</script>";
-    }
-    require_once("getAppsInDirectory.php");
-    function displayForm($status,$v)
-    {
-      echo "<script>_(\"resultantcontainer\").innerHTML=\"<form id='xbuild' class='build' method='POST' action='".$_SERVER['PHP_SELF']."'><table class='full'><tr><td>App Name</td><td> : </td><td><input class='wp' type='name' name='appregname' id='appregname' required placeholder='App Name' autocomplete='off' value='".$v."' onkeypress='avail(event);'></td></tr><tr><td colspan='3'><div class='appNameStatus'>".$status."</div><button type='button' class='greenButton fr' onclick='checkAvailability();'>Check</button></td></tr></table></form>\";</script>";
-    }
+    require_once("putMessage.php");
     require_once("checkInstalledApp.php");
-    function showUpdates()
-    {
-      global $conn;
-      global $inversion;
-      $x=count($inversion[0]);
-      if($x<=0)
-      {
-        echo "<div class='resultError'>No Updates are available.</div>";
-      }
-      else
-      {
-        $i=0;
-        $list="(0";
-        while($i<$x)
-        {
-          $list.=",".$inversion[0][$i];
-          $i++;
-        }
-        $list.=")";
-        $result=$conn->query("SELECT * FROM Apps WHERE ID IN ".$list."");
-        $n=mysqli_num_rows($result);
-        if($n<=0)
-        {
-          echo "<div class='resultError'>No Updates are available.</div>";
-        }
-        else
-        {
-          $i=0;
-          while($row=mysqli_fetch_row($result))
-          {
-            if($inversion[1][array_search($row[0],$inversion[0])]!=$row[17])
-            {
-              $i++;
-              echo "<div class='result'><span class='icon' style='background-image:url(../AppStore/icon/".$row[9].");'></span>";
-              echo "<p class='name'>".$row[1]."</p><p class='author'>".$row[3]."</p><p class='description'>".$row[5]."</p>";
-              if(in_array($row[0],$inversion[0]) && $row[0]=="5")//File Manager System Protected
-              {
-                echo "<div class='appbutton sysprotected'>Default</div>";
-              }
-              else
-              {
-                echo "<div class='appbuttontwo update' onclick=\"installApp('".$row[0]."',this);\">Update</div>";
-                echo "<div class='appbutton uninstall' onclick=\"uninstallApp('".$row[0]."',this);\">Uninstall</div>";
-              }
-              echo "</div>";
-            }
-          }
-          if($i<=0)
-          {
-            echo "<div class='resultError'>No Updates are available.</div>";
-          }
-        }
-      }
-    }
     checkInstalledApp();
-    function appsByME()
-    {
-      global $conn;
-      $result=$conn->query("SELECT * FROM Apps WHERE User='".$_SESSION['Logged']."'");
-      $n=mysqli_num_rows($result);
-      if($n<=0)
-      {
-        echo "<div class='resultError'>Sorry You haven't created any apps.</div>";
-      }
-      else
-      {
-        while($row=mysqli_fetch_row($result))
-        {
-          app($row,1);
-        }
-      }
-    }
   ?>
   <form acion="<?php echo $_SERVER['PHP_SELF']; ?>" method="POST">
 
@@ -211,14 +129,6 @@ function _(id)
           app($row);
         }
       }
-    }
-    else if(isset($_POST['getOwnApps']) && $_POST['getOwnApps']=="true")
-    {
-      appsByME();
-    }
-    else if(isset($_POST['getUpdates']) && $_POST['getUpdates']=="true")
-    {
-      showUpdates();
     }
     else if(isset($_FILES['source']))
     {
@@ -300,13 +210,6 @@ function _(id)
             putMessage("error","File Upload Error on ".$uperror);
           }
         }
-      }
-    }
-    else if(isset($_POST['regApp']))
-    {
-      if($_POST['regApp']=="true")
-      {
-        displayForm("Enter App Name to check availability.","");
       }
     }
     if(isset($_POST['appname']))
@@ -579,14 +482,6 @@ function _(id)
   ?>
   </div>
 </div>
-<form class="hiddenForn" id="menuForm" method="POST" action="<?php echo $_SERVER['PHP_SELF']; ?>">
-  <input type="hidden" id="regApp" name="regApp" value="">
-  <input type="hidden" id="getOwnApps" name="getOwnApps" value="">
-  <input type="hidden" id="getUpdates" name="getUpdates" value="">
-</form>
-
-
-
 <!--Manager Form-->
 <?php
   if(isset($_SESSION['User']))
@@ -608,172 +503,6 @@ function _(id)
 <!--Manager Form-->
 
 
-
-<?php
-if(isset($_POST['appregname']) && !empty($_POST['appregname']))
-{
-  $xsname=htmlspecialchars($_POST['appregname']);
-  global $conn;
-  $available=1;
-  $result=$conn->query("SELECT * FROM Apps WHERE Name='".$xsname."' LIMIT 1");
-  $n=mysqli_num_rows($result);
-  if($n>0)
-  {
-    $available=0;
-    $result=$conn->query("SELECT * FROM Apps WHERE Name='".$xsname."' AND User='".$_SESSION['Logged']."' LIMIT 1");
-    $n=mysqli_num_rows($result);
-    if($n<=0)
-    {
-      putMessage("error","App Name Exists.");
-      displayForm("<span style='color:#D00000;'>".$xsname." already Exists</span>",$xsname);
-      $available=0;
-    }
-    else
-    {
-      $available=2;
-    }
-  }
-  if($available==1 || $available==2)
-  {
-    if($available==1)
-    {
-      putMessage("success","App Name Available.");
-      if($conn->query("INSERT INTO `Apps`(`Name`,`User`) VALUES('".$xsname."','".$_SESSION['Logged']."')")==true)
-      {
-        putMessage("success","App Name Reserved.");
-      }
-      else
-      {
-        putMessage("error","App Name Reservation Error.");
-      }
-    }
-    else if($available==2)
-    {
-      putMessage("warning","Your App is Opened for Editing.");
-    }
-    $description="";
-    $keyword1="";
-    $keyword2="";
-    $keyword3="";
-    $category="";
-    $width="";
-    $height="";
-    $minwidth="";
-    $minheight="";
-    $maxwidth="";
-    $maxheight="";
-    if($available==2)
-    {
-      $row=mysqli_fetch_row($result);
-      $description=$row[5];
-      $keyword1=$row[6];
-      $keyword2=$row[7];
-      $keyword3=$row[8];
-      $category=$row[10];
-      $width=$row[11];
-      $height=$row[12];
-      $minwidth=$row[13];
-      $minheight=$row[14];
-      $maxwidth=$row[15];
-      $maxheight=$row[16];
-    }
-  ?>
-    <div class="popupbg" id="uploadpopupbg"></div>
-    <div class="popup" id="uploadpopup">
-      <div class="topbox">
-        <span class="title">Build App</span>
-        <button type="button" class="close closebutton" onclick="closeUploadPopup();"></button>
-      </div>
-    <div class="content" id="xspopcontent">
-      <form id="build" class="build" method="POST" enctype="multipart/form-data" action="<?php echo $_SERVER['PHP_SELF']; ?>">
-        <table class="full">
-          <tr>
-            <td>App Name</td>
-            <td> : </td>
-            <td><input type="name" name="appname" id="appname" required placeholder="App Name" value="<?php echo $xsname; ?>" readonly></td>
-          </tr>
-          <tr>
-            <td>Source Files</td>
-            <td> : </td>
-            <td><input type="file" name="source[]" id="source" accept="text/*,image/*,inode/*" required multiple></td>
-          </tr>
-          <tr>
-            <td>Description</td>
-            <td> : </td>
-            <td><textarea name="description" id="description" placeholder="Description"><?php echo $description; ?></textarea></td>
-          </tr>
-          <tr>
-            <td>Keyword 1</td>
-            <td> : </td>
-            <td><input type="name" name="keyword1" id="keyword1" placeholder="Keyword 1" value="<?php echo $keyword1; ?>"></td>
-          </tr>
-          <tr>
-            <td>Keyword 2</td>
-            <td> : </td>
-            <td><input type="name" name="keyword2" id="keyword2" placeholder="Keyword 2" value="<?php echo $keyword2; ?>"></td>
-          </tr>
-          <tr>
-            <td>Keyword 3</td>
-            <td> : </td>
-            <td><input type="name" name="keyword3" id="keyword3" placeholder="Keyword 3" value="<?php echo $keyword3; ?>"></td>
-          </tr>
-          <tr>
-            <td>Icon</td>
-            <td> : </td>
-            <td><input type="file" name="icon" id="icon" accept="image/*"></td>
-          </tr>
-          <tr>
-            <td>Category</td>
-            <td> : </td>
-            <td><input type="name" name="category" id="category" placeholder="Category" value="<?php echo $category; ?>"></td>
-          </tr>
-          <tr>
-            <td>Width</td>
-            <td> : </td>
-            <td><input type="number" name="width" id="width" placeholder="Width" value="<?php echo $width; ?>"></td>
-          </tr>
-          <tr>
-            <td>Height</td>
-            <td> : </td>
-            <td><input type="number" name="height" id="height" placeholder="Height" value="<?php echo $height; ?>"></td>
-          </tr>
-          <tr>
-            <td>Minimum Width</td>
-            <td> : </td>
-            <td><input type="number" name="minwidth" id="minwidth" placeholder="Minimum Width" value="<?php echo $minwidth; ?>"></td>
-          </tr>
-          <tr>
-            <td>Minimum Height</td>
-            <td> : </td>
-            <td><input type="number" name="minheight" id="minheight" placeholder="Minimum Height" value="<?php echo $minheight; ?>"></td>
-          </tr>
-          <tr>
-            <td>Maximum Width</td>
-            <td> : </td>
-            <td><input type="number" name="maxwidth" id="maxwidth" placeholder="Maximum Width" value="<?php echo $maxwidth; ?>"></td>
-          </tr>
-          <tr>
-            <td>Maximum Height</td>
-            <td> : </td>
-            <td><input type="number" name="maxheight" id="maxheight" placeholder="Maximum Height" value="<?php echo $maxheight; ?>"></td>
-          </tr>
-        </table>
-      </form>
-    </div>
-    <div class="bottombox" id="popupbottombox">
-      <center>
-        <button type="button" class="redButton" onclick="window.location='index.php';">Cancel</button>
-        <button type="reset" class="yellowButton" id="resetAppBuild" form="build">Reset</button>
-        <button type="button" class="greenButton" form="build" onclick="validateNewApp();"><?php if($available==2)echo "Save";else echo "Create";?></button>
-      </center>
-    </div>
-<script>
-  openUploadPopup();
-</script>
-<?php
-  }
-}
-?>
 <!--POPUP-->
 </body>
 </html>

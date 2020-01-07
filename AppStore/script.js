@@ -63,6 +63,7 @@ function installApp(app,button)
         if(x.message=="Installed")
         {
           button.classList.remove("install");
+          button.classList.remove("update");
           button.classList.add("uninstall");
           button.innerHTML="Uninstall";
           button.setAttribute("onclick","uninstallApp("+app+",this);");
@@ -124,8 +125,7 @@ function byte_unit_convert(b)
 }
 function registerApp()
 {
-  _("regApp").value="true";
-  _("menuForm").submit();
+  _("resultantcontainer").innerHTML="<form id='xbuild' class='build' method='POST' action=''><table class='full'><tr><td>App Name</td><td> : </td><td><input class='wp' type='name' name='appregname' id='appregname' required placeholder='App Name' autocomplete='off' value='' onkeypress='avail(event);'></td></tr><tr><td colspan='3'><div class='appNameStatus' id='appNameStatus'>Enter App Name to check availability.</div><button type='button' class='greenButton fr' onclick='checkAvailability();'>Check</button></td></tr></table></form>";
 }
 function openUploadPopup()
 {
@@ -137,6 +137,7 @@ function closeUploadPopup()
   _("uploadpopup").style.display="none";
   _("uploadpopupbg").style.display="none";
   _("resetAppBuild").click();
+  registerApp();
 }
 function validateNewApp()
 {
@@ -194,17 +195,40 @@ function checkAvailability()
     }
     ++i;
   }
-  _("xbuild").submit();
+  ajax("buildApp.php?appregname="+_("appregname").value,function(){
+    if(this.readyState==4 && this.status==200)
+    {
+      var x=JSON.parse(this.responseText);
+      setMessage(x.type,x.message);
+      if(x.a!="")
+      {
+        _('appNameStatus').innerHTML=x.a;
+      }
+      if(x.x!="")
+      {
+        _('resultantcontainer').innerHTML=x.x.replace("\\\"","\"");
+        openUploadPopup();
+      }
+    }
+  });
 }
 function ownApps()
 {
-  _("getOwnApps").value="true";
-  _("menuForm").submit();
+  ajax("myApps.php",function(){
+    if(this.readyState==4 && this.status==200)
+    {
+      _('resultantcontainer').innerHTML=this.responseText;
+    }
+  });
 }
 function checkforUpdates()
 {
-  _("getUpdates").value="true";
-  _("menuForm").submit();
+  ajax("showUpdates.php",function(){
+    if(this.readyState==4 && this.status==200)
+    {
+      _('resultantcontainer').innerHTML=this.responseText;
+    }
+  });
 }
 function requestedApps()
 {
