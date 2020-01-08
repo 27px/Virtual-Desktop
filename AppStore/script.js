@@ -230,18 +230,51 @@ function checkforUpdates()
     }
   });
 }
+function search(key)
+{
+  if(key=="")
+  {
+    _('resultantcontainer').innerHTML="";
+    return;
+  }
+  ajax("search.php?key="+key,function(){
+    if(this.readyState==4 && this.status==200)
+    {
+      _('resultantcontainer').innerHTML=this.responseText;
+    }
+  });
+}
+function keysearch(e,key)
+{
+  if(e.keyCode=="13")
+  {
+    search(key);
+  }
+}
 function requestedApps()
 {
-  _("requestedApp").value="true";
-  _("managerForm").submit();
+  ajax("requestedApp.php",function(){
+    if(this.readyState==4 && this.status==200)
+    {
+      _('resultantcontainer').innerHTML=this.responseText;
+    }
+  });
 }
 function approvedApps()
 {
-  _("approvedApps").value="true";
-  _("managerForm").submit();
+  ajax("approvedApps.php",function(){
+    if(this.readyState==4 && this.status==200)
+    {
+      _('resultantcontainer').innerHTML=this.responseText;
+    }
+  });
 }
 function appsInDevelopment()
 {
-  _("appsInDevelopment").value="true";
-  _("managerForm").submit();
+  ajax("appsInDevelopment.php",function(){
+    if(this.readyState==4 && this.status==200)
+    {
+      _('resultantcontainer').innerHTML=this.responseText;
+    }
+  });
 }

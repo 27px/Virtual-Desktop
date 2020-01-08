@@ -1,5 +1,9 @@
 <?php
   require_once("../config/root.php");
+  if(!isset($_SESSION['Logged']))
+  {
+    session_start();
+  }
   if(!@is_dir($dir))
   {
     $dir=$_SERVER['DOCUMENT_ROOT']."/".$root."User/Desktop/".$_SESSION['Logged'];

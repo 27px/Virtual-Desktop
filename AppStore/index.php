@@ -43,13 +43,25 @@ function _(id)
     ?>
       function rejectApp(app)
       {
-        _("rejectApp").value=app;
-        _("managerForm").submit();
+        ajax("rejectApp.php?app="+app,function(){
+          if(this.readyState==4 && this.status==200)
+          {
+            var x=JSON.parse(this.responseText);
+            setMessage(x.type,x.message);
+            _(x.app).parentNode.removeChild(_(x.app));
+          }
+        });
       }
       function approveApp(app)
       {
-        _("approveApp").value=app;
-        _("managerForm").submit();
+        ajax("approveApp.php?app="+app,function(){
+          if(this.readyState==4 && this.status==200)
+          {
+            var x=JSON.parse(this.responseText);
+            setMessage(x.type,x.message);
+            _(x.app).parentNode.removeChild(_(x.app));
+          }
+        });
       }
       function seeFiles(app)
       {
@@ -66,21 +78,18 @@ function _(id)
     require_once("checkInstalledApp.php");
     checkInstalledApp();
   ?>
-  <form acion="<?php echo $_SERVER['PHP_SELF']; ?>" method="POST">
-
   <div class='s'>
     <div class='title'>App Store</div>
     <div class='subcontainer'>
     <div class='buttoncontainer'>
-      <input type='submit' value='Search' name='Search' id='Search'>
+      <input type='submit' value='Search' name='Search' id='Search' onclick="search(_('Key').value);">
     </div>
       <div class='searchcontainer'>
         <img src='search_icon.svg' class='searchIcon'>
-        <input type='name' placeholder='Search App' class='Key' id='Key' name='Key' autofocus autocomplete='off' value='<?php if(isset($_POST['Search'])){echo $_POST['Key'];} ?>'>
+        <input type='name' placeholder='Search App' class='Key' id='Key' name='Key' autofocus autocomplete='off' onkeyup="keysearch(event,this.value);">
       </div>
     </div>
   </div>
-</form>
 <div class="bcontainer">
   <div class="sidemenu">
     <div class="menutitle">Account</div>
@@ -109,28 +118,7 @@ function _(id)
   </div>
   <div class='resultantcontainer' id="resultantcontainer">
   <?php
-    if(isset($_POST['Search']) && (isset($_POST['Key']) && !empty($_POST['Key'])))
-    {
-      $k=$_POST['Key'];
-      if($k=="")
-      {
-        header("Location:".$_SERVER['PHP_SELF']);
-      }
-      $result=$conn->query("SELECT * FROM Apps WHERE (Name like '".$k."' OR Name like '%".$k."%' OR Description like '%".$k."%' OR Keyword1 like '%".$k."%' OR Keyword2 like '%".$k."%' OR Keyword3 like '%".$k."%' OR Category like '".$k."') AND (Status='Approved') LIMIT 25");
-      $n=mysqli_num_rows($result);
-      if($n<=0)
-      {
-        echo "<div class='resultError'>Sorry we could'nt find anything.</div>";
-      }
-      else
-      {
-        while($row=mysqli_fetch_row($result))
-        {
-          app($row);
-        }
-      }
-    }
-    else if(isset($_FILES['source']))
+    if(isset($_FILES['source']))
     {
       if(isset($_POST['appname']))
       {
@@ -319,191 +307,9 @@ function _(id)
         }
       }
     }
-    if(isset($_POST['requestedApp']))
-    {
-      if($_POST['requestedApp']=="true")
-      {
-        $result=$conn->query("SELECT * FROM Apps WHERE Status='Requested'");
-        $n=mysqli_num_rows($result);
-        if($n>0)
-        {
-          while($row=mysqli_fetch_row($result))
-          {
-            global $inversion;
-            echo "<div class='result'><span class='icon' style='background-image:url(../AppStore/icon/".$row[9].");'></span>";
-            echo "<p class='name'>".$row[1]."</p><p class='author'>";
-            echo $row[3];//User Name
-            echo "</p><p class='description'>".$row[5]."</p>";
-            echo "<div class='appbuttontwo approve' onclick=\"approveApp('".$row[0]."');\">Approve</div>";
-            echo "<div class='appbuttonthree reject' onclick=\"rejectApp('".$row[0]."');\">Reject</div>";
-            echo "<div class='appbuttonfour files' onclick=\"seeFiles('".(isset($_SERVER['HTTPS']) && $_SERVER['HTTPS'] === 'on' ? "https" : "http")."://".$_SERVER['HTTP_HOST']."/".$root."AppStore/Apps/".$row[1]."');\">Files</div>";
-            if(!in_array($row[0],$inversion[0]))
-            {
-              echo "<div class='appbutton install' onclick=\"installApp('".$row[0]."',this);\">Install</div>";
-            }
-            else if(in_array($row[0],$inversion[0]) && $row[0]=="5")//File Manager System Protected
-            {
-              echo "<div class='appbutton sysprotected'>Default</div>";
-            }
-            else
-            {
-              echo "<div class='appbutton uninstall' onclick=\"uninstallApp('".$row[0]."',this);\">Uninstall</div>";
-            }
-            echo "</div>";
-          }
-        }
-        else
-        {
-          echo "<div class='resultError'>No pending Requests.</div>";
-        }
-      }
-    }
-    if(isset($_POST['approvedApps']))
-    {
-      if($_POST['approvedApps']=="true")
-      {
-        $result=$conn->query("SELECT * FROM Apps WHERE Status='Approved'");
-        $n=mysqli_num_rows($result);
-        if($n>0)
-        {
-          while($row=mysqli_fetch_row($result))
-          {
-            global $inversion;
-            echo "<div class='result'><span class='icon' style='background-image:url(../AppStore/icon/".$row[9].");'></span>";
-            echo "<p class='name'>".$row[1]."</p><p class='author'>";
-            echo $row[3];//User Name
-            echo "</p><p class='description'>".$row[5]."</p>";
-            //echo "<div class='appbuttontwo reject' onclick=\"rejectApp('".$row[0]."');\">Reject</div>";
-            if(!in_array($row[0],$inversion[0]))
-            {
-              echo "<div class='appbutton install' onclick=\"installApp('".$row[0]."',this);\">Install</div>";
-            }
-            else if(in_array($row[0],$inversion[0]) && $row[0]=="5")//File Manager System Protected
-            {
-              echo "<div class='appbutton sysprotected'>Default</div>";
-            }
-            else
-            {
-              echo "<div class='appbutton uninstall' onclick=\"uninstallApp('".$row[0]."',this);\">Uninstall</div>";
-            }
-            echo "</div>";
-          }
-        }
-        else
-        {
-          echo "<div class='resultError'>No Apps Approved.</div>";
-        }
-      }
-    }
-    if(isset($_POST['appsInDevelopment']))
-    {
-      if($_POST['appsInDevelopment']=="true")
-      {
-        $result=$conn->query("SELECT * FROM Apps WHERE Status='In Development'");
-        $n=mysqli_num_rows($result);
-        if($n>0)
-        {
-          while($row=mysqli_fetch_row($result))
-          {
-            global $inversion;
-            echo "<div class='result'><span class='icon' style='background-image:url(../AppStore/icon/".$row[9].");'></span>";
-            echo "<p class='name'>".$row[1]."</p><p class='author'>";
-            echo $row[3];//User Name
-            echo "</p><p class='description'>".$row[5]."</p>";
-            if(!in_array($row[0],$inversion[0]))
-            {
-              echo "<div class='appbutton install' onclick=\"installApp('".$row[0]."',this);\">Install</div>";
-            }
-            else if(in_array($row[0],$inversion[0]) && $row[0]=="5")//File Manager System Protected
-            {
-              echo "<div class='appbutton sysprotected'>Default</div>";
-            }
-            else
-            {
-              echo "<div class='appbutton uninstall' onclick=\"uninstallApp('".$row[0]."',this);\">Uninstall</div>";
-            }
-            echo "</div>";
-          }
-        }
-        else
-        {
-          echo "<div class='resultError'>No Apps in Development.</div>";
-        }
-      }
-    }
-    if(isset($_POST['rejectApp']))
-    {
-      if(!empty($_POST['rejectApp']))
-      {
-        if($conn->query("UPDATE `Apps` SET `Status`='Rejected' WHERE `ID`='".$_POST['rejectApp']."'")=="true")
-        {
-          putMessage("success","App Rejected.");
-          $xuname="";
-          $xapp="";
-          $result=$conn->query("SELECT * FROM `Apps` WHERE `ID`='".$_POST['rejectApp']."' LIMIT 1");
-          $n=mysqli_num_rows($result);
-          $row=mysqli_fetch_row($result);
-          $xuname=$row[3];
-          $xapp=$row[1];
-          if($n>0)
-          {
-            $conn->query("INSERT INTO `notification`(`User`,`Message`,`type`) VALUES('".$xuname."','Your App ".$xapp." got rejected, Check App Store for more details.','red')");
-          }
-        }
-        else
-        {
-          putMessage("error","App could not Rejected.");
-        }
-      }
-    }
-    if(isset($_POST['approveApp']))
-    {
-      if(!empty($_POST['approveApp']))
-      if($conn->query("UPDATE `Apps` SET `Status`='Approved' WHERE `ID`='".$_POST['approveApp']."'")=="true")
-      {
-        putMessage("success","App Approved.");
-        $xuname="";
-        $xapp="";
-        $result=$conn->query("SELECT * FROM `Apps` WHERE `ID`='".$_POST['approveApp']."' LIMIT 1");
-        $n=mysqli_num_rows($result);
-        $row=mysqli_fetch_row($result);
-        $xuname=$row[3];
-        $xapp=$row[1];
-        if($n>0)
-        {
-          $conn->query("INSERT INTO `notification`(`User`,`Message`,`type`) VALUES('".$xuname."','Your App ".$xapp." was Approved, Check App Store for more details.','green')");
-        }
-      }
-      else
-      {
-        putMessage("error","App could not Accepted.");
-      }
-    }
   ?>
   </div>
 </div>
-<!--Manager Form-->
-<?php
-  if(isset($_SESSION['User']))
-  if($_SESSION['User']=="Manager")
-  {
-    ?>
-    <!--Manager Form-->
-    <form class="hiddenForn" id="managerForm" method="POST" action="<?php echo $_SERVER['PHP_SELF']; ?>">
-      <input type="hidden" id="requestedApp" name="requestedApp" value="">
-      <input type="hidden" id="approvedApps" name="approvedApps" value="">
-      <input type="hidden" id="appsInDevelopment" name="appsInDevelopment" value="">
-      <input type="hidden" id="rejectApp" name="rejectApp" value="">
-      <input type="hidden" id="approveApp" name="approveApp" value="">
-    </form>
-    <!--Manager Form-->
-    <?php
-  }
-?>
-<!--Manager Form-->
-
-
-<!--POPUP-->
 </body>
 </html>
 <?php
