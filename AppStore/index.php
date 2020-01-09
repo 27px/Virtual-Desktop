@@ -3,7 +3,7 @@ ob_start();
 session_start();
 if(!(isset($_SESSION['Logged'])))
 {
-  header("Location:../Login/Login.php");
+  header("Location:../Login/index.php");
 }
 else
 {
@@ -12,18 +12,14 @@ else
   $success="";
   $error="";
 }
-if(isset($_POST['logout']))
+if(isset($_GET['logout']) && $_GET['logout']=="true")
 {
-  if($_POST['logout']==1)
-  {
-    $_SESSION=array();//Clear all SESSION Variables
-    session_destroy();
-    header("Location:../Login/Login.php");
-  }
+  require_once('../Includes/logout.php');
+  header('Location:../Home/index.php');
 }
 $inversion="";
 require_once("dir.php");
-require_once("connect_db.php");
+require_once("../config/connect_db.php");
 require_once("app.php");
 ?>
 <html>
@@ -85,7 +81,7 @@ function _(id)
       <input type='submit' value='Search' name='Search' id='Search' onclick="search(_('Key').value);">
     </div>
       <div class='searchcontainer'>
-        <img src='search_icon.svg' class='searchIcon'>
+        <img src='Images/search_icon.svg' class='searchIcon' alt="&#128269;">
         <input type='name' placeholder='Search App' class='Key' id='Key' name='Key' autofocus autocomplete='off' onkeyup="keysearch(event,this.value);">
       </div>
     </div>
@@ -96,7 +92,7 @@ function _(id)
     <div class="menuitems" onclick="window.location='../Home/index.php';">Home</div>
     <div class="menuitems" onclick="window.location='../Desktop/index.php';">Desktop</div>
     <div class="menuitems" onclick="window.location='../Settings/index.php';">Settings</div>
-    <div class="menuitems" onclick="window.location='../Home/index.php?logout=true';">Logout</div>
+    <div class="menuitems" onclick="window.location='index.php?logout=true';">Logout</div>
     <div class="menutitle">Menu</div>
     <div class="menuitems" onclick="parseLatestApps();">Latest</div>
     <div class="menuitems" onclick="parseCategories();">Category</div>

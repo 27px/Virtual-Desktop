@@ -1,5 +1,5 @@
 <?php
-  require_once("connect_db.php");
+  require_once("../config/connect_db.php");
   global $conn;
   global $dir;
   require_once("dir.php");
@@ -13,7 +13,7 @@
   $x=count($inversion[0]);
   if($x<=0)
   {
-    echo "<div class='resultError'>No Apps Installed.</div>";
+    echo "<div class='resultError'>No Apps Installed.</div><div class='resultERRImage'></div>";
   }
   else
   {
@@ -29,7 +29,7 @@
     $n=mysqli_num_rows($result);
     if($n<=0)
     {
-      echo "<div class='resultError'>No Apps Installed.</div>";
+      echo "<div class='resultError'>No Apps Installed.</div><div class='resultERRImage'></div>";
     }
     else
     {

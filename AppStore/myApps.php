@@ -1,5 +1,5 @@
 <?php
-  require_once("connect_db.php");
+  require_once("../config/connect_db.php");
   require_once("app.php");
   if(!isset($_SESSION['Logged']))
   {
@@ -9,7 +9,7 @@
   $n=mysqli_num_rows($result);
   if($n<=0)
   {
-    echo "<div class='resultError'>Sorry You haven't created any apps.</div>";
+    echo "<div class='resultError'>Sorry You haven't created any apps.</div><div class='resultERRImage'></div>";
   }
   else
   {

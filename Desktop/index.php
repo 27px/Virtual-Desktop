@@ -20,7 +20,7 @@ ob_start();
 session_start();
 if(!(isset($_SESSION['Logged'])))
 {
-  header("Location:../Login/Login.php");
+  header("Location:../Login/index.php");
 }
 else
 {
@@ -31,9 +31,8 @@ else
 }
 if(isset($_POST['logout']) && $_POST['logout']==1)
 {
-  $_SESSION=array();//Clear all SESSION Variables
-  session_destroy();
-  header("Location:../Login/Login.php");
+  require_once('../Includes/logout.php');
+  header('Location:../Home/index.php');
 }
 require_once("../config/root.php");
 if(!@is_dir($dir))
@@ -1313,12 +1312,8 @@ function growRect(e,x,s)
   }
   function logout()
   {
-    if(confirm("Are you sure you want to Logout ?"))
-    {
-      //sessionStorage.setItem("Clipboard","");
-      document.getElementById('logout').value='1';
-      document.getElementById('contextForm').submit();
-    }
+    document.getElementById('logout').value='1';
+    document.getElementById('contextForm').submit();
   }
   function max(a,b)
   {

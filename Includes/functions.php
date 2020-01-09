@@ -76,7 +76,6 @@
     }
     return $file;
   }
-
   function getDesktopSettings()
   {
     global $dir;

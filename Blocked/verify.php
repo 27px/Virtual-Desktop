@@ -5,7 +5,7 @@ if(!(isset($_SESSION['bstatus'])))
 {
   $_SESSION=array();//Clear all SESSION Variables
   session_destroy();
-  header("Location:../Login/Login.php");
+  header("Location:../Login/index.php");
 }
 require_once("../config/database.php");
 $table_name="Verification";
@@ -49,7 +49,7 @@ if(isset($_POST['Verify']) && !empty($_POST['Verify']))
                   if($conn->query($sql)==TRUE)
                   {
                     $_SESSION['error']="3";
-                    header("Location:../LogIn/Login.php");
+                    header("Location:../LogIn/index.php");
                   }
                   else
                   {
@@ -246,7 +246,7 @@ if(!empty($_SESSION['bstatus']))
 {
   if($_SESSION['bstatus']=="Allowed")
   {
-    header("Location:../Login/Login.php");
+    header("Location:../Login/index.php");
   }
   else if(isset($_SESSION['BUser']) && !empty($_SESSION['BUser']))
   {

@@ -5,7 +5,7 @@
   }
   if(isset($_GET['app']) && !empty($_GET['app']))
   {
-    require_once("connect_db.php");
+    require_once("../config/connect_db.php");
     if($conn->query("UPDATE `Apps` SET `Status`='Approved' WHERE `ID`='".$_GET['app']."'")=="true")
     {
       ajaxMessage("success","App Approved.","apprequest_".$_GET['app']);

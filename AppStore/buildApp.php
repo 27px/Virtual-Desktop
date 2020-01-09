@@ -6,7 +6,7 @@
   if(isset($_GET['appregname']) && !empty($_GET['appregname']))
   {
     $xsname=htmlspecialchars($_GET['appregname']);
-    require_once("connect_db.php");
+    require_once("../config/connect_db.php");
     if(!isset($_SESSION['Logged']))
     {
       session_start();

@@ -3,7 +3,7 @@ ob_start();
 session_start();
 if(!(isset($_SESSION['Logged'])))
 {
-  die("<div style=\"color:#FF5050;font-size:40px;border-bottom:1px solid #FF0000;padding:20px;margin:100px;text-align:center;\">You are not logged in . . .</div><div style=\"color:#FF5050;text-align:center;font-size:30px;padding-bottom:100px;\"><a style=\"color:#FF5050;\" href=\"../Login/Login.php\">Click here to login.</a></div>");
+  die("<div style=\"color:#FF5050;font-size:40px;border-bottom:1px solid #FF0000;padding:20px;margin:100px;text-align:center;\">You are not logged in . . .</div><div style=\"color:#FF5050;text-align:center;font-size:30px;padding-bottom:100px;\"><a style=\"color:#FF5050;\" href=\"../Login/index.php\">Click here to login.</a></div>");
 }
 else
 {
@@ -265,9 +265,8 @@ function authorised($path,$log)
 }
 if(isset($_POST['logout']) && $_POST['logout']==1)
 {
-  $_SESSION=array();//Clear all SESSION Variables
-  session_destroy();
-  header("Location:../Login/Login.php");
+  require_once('../Includes/logout.php');
+  header('Location:../Home/index.php');
 }
 if(isset($_GET['url']) && !empty($_GET['url']))
 {
@@ -2993,12 +2992,8 @@ function endRect(s)
   }
   function logout()
   {
-    if(confirm("Are you sure you want to Logout ?"))
-    {
-      //sessionStorage.setItem("Clipboard","");
-      document.getElementById('logout').value='1';
-      document.getElementById('contextForm').submit();
-    }
+    document.getElementById('logout').value='1';
+    document.getElementById('contextForm').submit();
   }
   function max(a,b)
   {

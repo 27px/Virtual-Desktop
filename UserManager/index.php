@@ -3,7 +3,7 @@
   session_start();
   if(!(isset($_SESSION['Logged'])))
   {
-    header("Location:../Login/Login.php");
+    header("Location:../Login/index.php");
   }
   if(!(isset($_SESSION['User'])) || $_SESSION['User']!="Manager")
   {

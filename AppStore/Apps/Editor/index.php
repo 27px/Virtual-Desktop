@@ -3,7 +3,7 @@ ob_start();
 session_start();
 if(!(isset($_SESSION['Logged'])))
 {
-  header("Location:../../../Login/Login.php");
+  header("Location:../../../Login/index.php");
 }
 else
 {

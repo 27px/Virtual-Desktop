@@ -1,23 +1,10 @@
 <?php
 ob_start();
 session_start();
-if(isset($_POST['LogOut']))
+if((isset($_POST['LogOut'] && $_POST['LogOut']=="true") || (isset($_GET['logout']) && $_GET['logout']=="true"))
 {
-  if($_POST['LogOut']=="true")
-  {
-    $_SESSION[]=array();
-    session_destroy();
-    header("Location:".$_SERVER['PHP_SELF']);
-  }
-}
-if(isset($_GET['logout']))
-{
-  if($_GET['logout']=="true")
-  {
-    $_SESSION[]=array();
-    session_destroy();
-    header("Location:".$_SERVER['PHP_SELF']);
-  }
+  require_once('../Includes/logout.php');
+  header('Location:index.php');
 }
 ?>
 <html>
@@ -663,7 +650,7 @@ function gotoURL(code)
   }
   else if(code=="Log In")
   {
-    url="../LogIn/login.php";
+    url="../LogIn/index.php";
   }
   else if(code=="Sign Up")
   {

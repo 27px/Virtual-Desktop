@@ -1,5 +1,5 @@
 <?php
-  require_once('connect_db.php');
+  require_once('../config/connect_db.php');
   global $dir;
   require_once("dir.php");
   require_once("checkInstalledApp.php");
@@ -40,6 +40,6 @@
   }
   else
   {
-    echo "<div class='resultError'>No pending Requests.</div>";
+    echo "<div class='resultError'>No pending Requests.</div><div class='resultERRImage'></div>";
   }
 ?>

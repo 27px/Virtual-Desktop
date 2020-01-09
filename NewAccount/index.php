@@ -5,7 +5,6 @@ $fn="";
 $ln="";
 $em="";
 $alreadyregistered=0;
-require_once("../config/root.php");
 ?>
 <html>
 <head>
@@ -369,27 +368,12 @@ require_once("../config/root.php");
 </head>
 <body>
   <?php
+    require_once("../config/connect_db.php");
     if(isset($_POST['email']) && !empty($_POST['email']))
     {
-      require_once("../config/database.php");
+      $dir=$_POST['email'];
+      require_once("../config/root.php");
       $alreadyregistered=0;
-      $conn=new mysqli($servername,$username,$password);
-      if(mysqli_connect_error())
-      {
-        die("Connection Error : ".mysqli_connect_error());
-      }
-      if(empty(mysqli_fetch_array($conn->query("SHOW DATABASES LIKE '".$database."'"))))
-      {
-        die("Database not Found");
-      }
-      if(!($conn->query("USE ".$database)==true))
-      {
-        die("Could'nt change Database");
-      }
-      if(empty(mysqli_fetch_array($conn->query("SHOW TABLES LIKE 'Login'"))))
-      {
-        die("Table not Found");
-      }
       $ext="jpg";
       if(isset($_FILES['profilepicture']))
       {
@@ -426,8 +410,10 @@ require_once("../config/root.php");
         $otp="0123456789abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ";
         $otp=str_shuffle($otp);
         $otp=substr($otp,0,6);
+        $xe="";
         if($conn->query("INSERT INTO `Verification` (`User`,`OTP`,`Type`) VALUES('".$_POST['email']."','".$otp."','verify')")==true)
         {
+          echo "<div style='display:none'>";
           $to=$_POST['email'];
           date_default_timezone_set('Asia/Kolkata');
           require_once($_SERVER['DOCUMENT_ROOT']."/".$root.'\Plugins\Mail\class.phpmailer.php');
@@ -447,7 +433,7 @@ require_once("../config/root.php");
           $mail->MsgHTML($body);
           $address=$to;
           $mail->AddAddress($address,"Virtual Desktop");
-          if($mail->Send())
+          if(@$mail->Send())
           {
             $_SESSION['BUser']=$_POST['email'];
             $_SESSION['bstatus']="verify";
@@ -455,12 +441,17 @@ require_once("../config/root.php");
           }
           else
           {
-            echo "OTP Sent Error, Check Internet Connection";
+            $xe="OTP Sent Error, Check Internet Connection";
           }
+          echo "</div>";
         }
         else
         {
           echo "Database Error";
+        }
+        if($xe!="")
+        {
+          echo "<div class='error'>".$xe."</div>";
         }
       }
       else

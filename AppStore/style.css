@@ -5,7 +5,7 @@
 }
 body
 {
-  background:#6b1b78 url("bg.jpg");
+  background:#6b1b78 url("Images/bg.jpg");
   background-size:cover;
   background-attachment:fixed;
   overflow:hidden;
@@ -31,7 +31,7 @@ div.s
   top:0;
   left:0;
 }
-div.result,div.resultError
+div.result,div.resultError,div.resultERRImage
 {
   width:calc(100% - 40px);
   min-width:600px;
@@ -56,7 +56,17 @@ div.resultError
   font-size:30px;
   font-family:arial black,arial,sans-serif;
   text-align:center;
-  background-color:rgba(255,0,0,0.08);
+  background-color:#FFFFFF;
+  color:#5C2770;
+  -webkit-text-stroke:1px #000000;
+  letter-spacing:2px;
+}
+div.resultERRImage
+{
+  min-height:375px;
+  background-image:url("Images/1.jpg");
+  background-position:center;
+  background-size:cover;
 }
 div.result span.icon
 {
@@ -169,7 +179,7 @@ img.searchIcon
   width:auto;
   position:absolute;
   top:50%;
-  left:10;
+  left:10px;
   transform:translateY(-50%);
 }
 div.searchcontainer input[type="name"]

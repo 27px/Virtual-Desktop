@@ -3,7 +3,7 @@ ob_start();
 session_start();
 if(!(isset($_SESSION['Logged'])))
 {
-  header("Location:../Login/Login.php");
+  header("Location:../Login/index.php");
 }
 else
 {
@@ -12,14 +12,10 @@ else
   $success="";
   $error="";
 }
-if(isset($_POST['logout']))
+if(isset($_POST['logout']) && $_POST['logout']==1)
 {
-  if($_POST['logout']==1)
-  {
-    $_SESSION=array();//Clear all SESSION Variables
-    session_destroy();
-    header("Location:../Login/Login.php");
-  }
+    require_once('../Includes/logout.php');
+    header('Location:../Home/index.php');
 }
 $inversion="";
 $ser="../User/Desktop/".$dir;

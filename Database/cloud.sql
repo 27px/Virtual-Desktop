@@ -3,7 +3,7 @@
 -- http://www.phpmyadmin.net
 --
 -- Host: 127.0.0.1
--- Generation Time: Jan 05, 2020 at 05:21 AM
+-- Generation Time: Jan 09, 2020 at 04:52 AM
 -- Server version: 5.6.16
 -- PHP Version: 5.5.11
 
@@ -47,7 +47,7 @@ CREATE TABLE IF NOT EXISTS `apps` (
   `Version` int(11) NOT NULL DEFAULT '1',
   PRIMARY KEY (`ID`),
   UNIQUE KEY `Name` (`Name`)
-) ENGINE=InnoDB  DEFAULT CHARSET=latin1 COMMENT='App Store' AUTO_INCREMENT=49 ;
+) ENGINE=InnoDB  DEFAULT CHARSET=latin1 COMMENT='App Store' AUTO_INCREMENT=12 ;
 
 --
 -- Dumping data for table `apps`
@@ -55,11 +55,12 @@ CREATE TABLE IF NOT EXISTS `apps` (
 
 INSERT INTO `apps` (`ID`, `Name`, `IndexURL`, `User`, `Status`, `Description`, `Keyword1`, `Keyword2`, `Keyword3`, `icon`, `Category`, `width`, `height`, `min-width`, `min-height`, `max-width`, `max-height`, `Version`) VALUES
 (1, 'Dictionary', '', 'rahulr0047@gmail.com', 'Approved', 'Simple English Dictionary', 'English Meaning', 'English', 'Meaning', 'icon_Dictionary_1.png', 'Education', 800, 400, 725, 400, 0, 0, 1),
-(2, 'Editor', '', 'rahulr0047@gmail.com', 'Approved', 'Text Based File Editor : TXT HTM HTML JS CSS XML JSON SVG PHP', 'Reader', 'Editor', 'Preview Text Editor', 'icon_Editor_2.png', 'Education', 1000, 400, 1000, 400, 0, 0, 1),
+(2, 'Editor', '', 'rahulr0047@gmail.com', 'Approved', 'Text Based File Editor : TXT HTM HTML JS CSS XML JSON SVG PHP', 'Reader', 'Editor', 'Preview Text Editor', 'icon_Editor_2.png', 'Education', 1000, 400, 1000, 400, 0, 0, 2),
 (3, 'Memory Game', '', 'rahulr0047@gmail.com', 'Approved', 'Increase Mind & Memory Power', 'Mind Strength', 'Memory Game', 'Increase Memory', 'icon_Memory_Game_3.svg', 'Game', 1100, 500, 1100, 500, 0, 0, 2),
-(4, 'Snake Game', '', 'rahulr0047@gmail.com', 'In Development', 'Classic Snake Game', 'Puzzle', 'Snake Game', 'Gaming', 'icon_Snake_Game_4.png', 'Game', 402, 392, 402, 392, 402, 392, 1),
-(6, 'Quick Note', '', 'rahulr0047@gmail.com', 'Requested', 'New Description Test', 'Keyword test1', 'Edit', 'Text TXT', 'icon_Quick_Note_6.svg', 'System', 500, 250, 300, 100, 800, 500, 1),
-(7, 'Image Viewer', '', 'rahulr0047@gmail.com', 'In Development', 'Image Viewer', 'Gallery', 'Picture', 'JPG SVG PNG GIF', 'icon_image.svg', 'System', 800, 500, 400, 400, 0, 0, 4);
+(4, 'Snake Game', '', 'rahulr0047@gmail.com', 'Requested', 'Classic Snake Game', 'Puzzle', 'Snake Game', 'Gaming', 'icon_Snake_Game_4.png', 'Game', 402, 405, 402, 405, 450, 450, 1),
+(6, 'Quick Note', '', 'twentysevenpixels@gmail.com', 'Requested', 'New Description Test', 'Keyword test1', 'Edit', 'Text TXT', 'icon_Quick_Note_6.svg', 'System', 500, 250, 300, 100, 800, 500, 1),
+(7, 'Image Viewer', '', 'rahulr0047@gmail.com', 'Approved', 'Image Viewer', 'Gallery', 'Picture', 'JPG SVG PNG GIF', 'icon_image.svg', 'System', 800, 500, 400, 400, 0, 0, 4),
+(11, 'Calendar', NULL, 'rahulr0047@gmail.com', 'Requested', 'Calendar', 'Calendar', 'Date', 'Year', 'icon_Calendar_11.png', 'System', 300, 400, 350, 495, 350, 525, 8);
 
 -- --------------------------------------------------------
 
@@ -75,7 +76,7 @@ CREATE TABLE IF NOT EXISTS `editor` (
   `AccentColor` varchar(50) NOT NULL,
   `Theme` varchar(50) NOT NULL,
   PRIMARY KEY (`id`)
-) ENGINE=InnoDB  DEFAULT CHARSET=latin1 AUTO_INCREMENT=3 ;
+) ENGINE=InnoDB  DEFAULT CHARSET=latin1 AUTO_INCREMENT=2 ;
 
 --
 -- Dumping data for table `editor`

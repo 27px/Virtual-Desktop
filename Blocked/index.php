@@ -5,7 +5,7 @@ if(!(isset($_SESSION['bstatus'])))
 {
   $_SESSION=array();//Clear all SESSION Variables
   session_destroy();
-  header("Location:../Login/Login.php");
+  header("Location:../Login/index.php");
 }
 ?>
 <html>

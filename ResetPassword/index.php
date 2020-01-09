@@ -437,7 +437,7 @@ function togglePassword(x,y)
         {
           $conn->query("UPDATE `Login` SET `Password`='".$_POST['password']."' WHERE EMail='".$_SESSION['resetPassword']."' ");
           $conn->query("DELETE FROM `Verification` WHERE User='".$_SESSION['resetPassword']."' AND Type='reset';");
-          header("Location:../Login/login.php");
+          header("Location:../Login/index.php");
         }
         else
         {
