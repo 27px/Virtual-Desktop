@@ -1,6 +1,7 @@
 <?php
 ob_start();
 session_start();
+
 $e="";
 $otperror=0;
 require_once("../config/root.php");

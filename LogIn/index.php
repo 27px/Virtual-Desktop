@@ -110,10 +110,10 @@ else if(isset($_COOKIE['user_id']) && isset($_COOKIE['password']))
       }
     ?>
     <div class="row"><div class="icon usericon"></div><input type="text" form="f1" name="user" id="user" placeholder="User Id" oninput="changeImage(this.value);" autocomplete="off" value="<?php echo $xuserid; ?>"></div>
-    <div class="row"><div class="icon passicon"></div><input type="password" form="f1" name="password" id="password" placeholder="Password"><div class="icon view" id="viewable" onclick="togglePassword(this);viewHoverOn();" onmouseenter="viewHoverOn();" onmouseleave="viewHoverOff();"></div></div>
+    <div class="row"><div class="icon passicon"></div><input type="password" form="f1" name="password" id="password" placeholder="Password"><div class="icon view" id="viewable" tabindex="0" onclick="togglePassword(this);viewHoverOn();" onfocus="viewHoverOn();" onblur="viewHoverOff();" onmouseenter="viewHoverOn();" onmouseleave="viewHoverOff();" onkeydown="if(event.keyCode==13){togglePassword(this);viewHoverOn()};"></div></div>
     <div class="rememberme"><div class="checkbox" id="chb" tabindex="0" checked="no" onkeydown="checkkey(_('chb'),event);" onclick="checkb(_('chb'));"></div><div onclick="checkb(_('chb'));" class="rm">Remember Me</div><div class="forgot" tabindex="0" onclick="window.location='../ResetPassword/index.php';" onkeypress="checkfp(event,'../Login/resetpassword.php');">Forgot Password ?</div></div>
     <div class="button" onclick="login();" onkeydown="checksub(event);" tabindex="0">Log In</div>
-    <div class="newaccount" tabindex="0" onclick="window.location='../NewAccount/index.php';" onkeypress="checkfp(event,'../NewAccount/index.php');">Don't have an Account ? Create one.</div>
+    <div class="New" tabindex="0" onclick="window.location='../New/index.php';" onkeypress="checkfp(event,'../New/index.php');">Don't have an Account ? Create one.</div>
   </div>
   <div class="reset" onclick="reset();" onkeydown="checkreset(event);" tabindex="0"></div>
   <div class="home" onclick="window.location='../Home/index.php';" onkeydown="checkhome(event);" tabindex="0"></div>

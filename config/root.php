@@ -1,11 +1,15 @@
 <?php
-  if($dir=="")
+  if(!isset($dir) || $dir=="")
   {
-    if(!isset($_SESSION['Logged']))
+    if((session_id()=="") && !isset($_SESSION['Logged']))
     {
       session_start();
     }
-    $dir=$_SESSION['Logged'];
+    $dir="";
+    if(isset($_SESSION['Logged']))
+    {
+      $dir=$_SESSION['Logged'];
+    }
   }
   $root="Root/fCLOUD/";//Path of Project from Server Root
   $ser=(isset($_SERVER['HTTPS']) && $_SERVER['HTTPS'] === 'on' ? "https" : "http")."://".$_SERVER['HTTP_HOST']."/".$root."User/Desktop/".$dir;
