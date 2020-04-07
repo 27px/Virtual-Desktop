@@ -8,6 +8,8 @@ $alreadyregistered=0;
 ?>
 <html>
 <head>
+  <meta name="viewport" content="width=device-width,initial-scale=1.0,user-scalable=no">
+  <meta name="theme-color" content="#1ab188">
   <title>New Account</title>
   <style>
   *
@@ -23,11 +25,10 @@ $alreadyregistered=0;
   }
   div.container
   {
-    width:27vw;
-    height:370px;
-    min-width:370px;
-    min-height:525px;
-    max-height:370px;
+    width:365px;
+    height:475px;
+    min-width:275px;
+    min-height:400px;
     background-color:#24303c;
     border:1px solid #1ab188D0;
     position:absolute;
@@ -131,10 +132,12 @@ $alreadyregistered=0;
   input.right
   {
     margin-left:5px;
+    float:right;
   }
   input.left
   {
     margin-right:5px;
+    float:left;
   }
   input[type="email"]
   {
@@ -271,6 +274,69 @@ $alreadyregistered=0;
     display:inline-block;
     float:right;
   }
+  @media only screen and (max-width:400px),screen and (max-height:550px)
+  {
+    body
+    {
+      background-color:#24303c;
+      overflow:auto;
+    }
+    div.container
+    {
+      width:100% !important;
+      height:100% !important;
+      border-radius:0px;
+      box-shadow:0px 0px 0px 0px transparent;
+      border:1px solid transparent;
+      overflow:auto;
+      position:absolute;
+      top:0;
+      left:0;
+      transform:translate(0%,0%);
+    }
+    input[type="name"]
+    {
+      width:100%;
+    }
+    input.right
+    {
+      margin-left:0px;
+    }
+    input.left
+    {
+      margin-right:0px;
+    }
+    div.picture
+    {
+      font-size:14px;
+    }
+  }
+  @media only screen and (min-width:500px) and (max-width:900px)
+  {
+    div.container
+    {
+      padding-bottom:5px;
+    }
+    input[type="name"]
+    {
+      width:calc(50% - 10px);
+    }
+    input.right
+    {
+      margin-left:5px;
+    }
+    input.left
+    {
+      margin-right:5px;
+    }
+  }
+  @media screen and (max-height:570px) and (max-width:499px),screen and (min-width:901px)
+  {
+    div.container
+    {
+      padding-bottom:50px;
+    }
+  }
 </style>
 <script>
   function _(id)
@@ -314,6 +380,7 @@ $alreadyregistered=0;
       var r=new FileReader();
       r.addEventListener("load",function(){
         i.innerHTML="";
+        i.style.borderColor="#000000";
         i.style.backgroundImage="url('"+r.result+"')";
       },false);
       r.readAsDataURL(z);

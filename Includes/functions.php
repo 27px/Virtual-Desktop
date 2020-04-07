@@ -81,7 +81,7 @@
     global $dir;
     $file="DesktopSettings.fcz";
     $verifyType=0;
-    $r="";
+    $r=array();
     if(@file_exists($dir."/".$file))
     {
       $f=@fopen($dir."/".$file,"r");

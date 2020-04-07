@@ -14,14 +14,15 @@ else
 }
 if(isset($_POST['logout']) && $_POST['logout']==1)
 {
-    require_once('../Includes/logout.php');
-    header('Location:../Home/index.php');
+  require_once('../Includes/logout.php');
+  header('Location:../Home/index.php');
 }
 $inversion="";
-$ser="../User/Desktop/".$dir;
+$ser="/Root/fCLOUD/User/Desktop/".$dir;
 $dir=$_SERVER['DOCUMENT_ROOT'].parse_url($ser,PHP_URL_PATH)."/";
 if(!@is_dir($dir))
 {
+  global $root;
   $dir=$_SERVER['DOCUMENT_ROOT']."/".$root."User/Desktop/".$_SESSION['Logged'];
 }
 $dir=str_replace("\\","/",$dir);
@@ -172,10 +173,10 @@ function showNotification($x)
 {
   echo "<div class='notification'>".$x."</div>";
 }
-function setArrayOfFiles($x)
+function setArrayOfFiles($xdir)
 {
   global $sarray;
-  if($dh=opendir($x))
+  if($dh=opendir($xdir))
   {
     while($file=readdir($dh))
     {
@@ -183,13 +184,13 @@ function setArrayOfFiles($x)
       {
         continue;
       }
-      if(is_dir($x."/".$file))
+      if(is_dir($xdir."/".$file))
       {
-        $sarray[$x."/".$file]=getTotal($x."/".$file);
+        $sarray[$xdir."/".$file]=getTotal($xdir."/".$file);
       }
       else
       {
-        $sarray[$x."/".$file]=filesize($x."/".$file);
+        $sarray[$xdir."/".$file]=filesize($xdir."/".$file);
       }
     }
   }

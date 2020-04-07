@@ -2258,7 +2258,8 @@ if($dh=@opendir($dir))
     }
     else
     {
-      $ext=end(explode(".",$file));
+      $tmpx=explode(".",$file);
+      $ext=end($tmpx);
       $skipthisfile=0;
       if(@is_dir($dir."/".$file))
       {
@@ -2268,7 +2269,9 @@ if($dh=@opendir($dir))
       else if($ext=="fcz")
       {
         //Read & Fetch Contents from the file to display System Default Apps.
-        $f=@fopen($dir."/".$file,"r");
+        $pathx=$dir."/".$file;
+        $ptype="r";
+        $f=@fopen($pathx,$ptype);
         $verifyType=0;
         $skipthisfile=0;
         $minwidth=0;
