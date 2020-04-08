@@ -1,6 +1,6 @@
 # Virtual-Desktop
 Virtual Desktop, Apps, App Store, HTML IDE, File Manager
-
+PHP 5, MYSQL, HTML, CSS, JS, AJAX
 ![ScreenShot](https://raw.github.com/27px/Virtual-Desktop/master/Project%20Screenshots/10%20Desktop.jpg)
 ![ScreenShot](https://raw.github.com/27px/Virtual-Desktop/master/Project%20Screenshots/11%20Right%20Click.jpg)
 ![ScreenShot](https://raw.github.com/27px/Virtual-Desktop/master/Project%20Screenshots/2.jpg)
