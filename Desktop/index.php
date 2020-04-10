@@ -68,6 +68,7 @@ $bgnum=0;
 $bgImgExt="jpg";
 
 //Image Extensions
+$ImgExt=array();
 $ImgExt[]="jpg";
 $ImgExt[]="jpeg";
 $ImgExt[]="svg";
@@ -1745,7 +1746,8 @@ if(isset($_POST['wallpaperFromURL']))
   {
     $url=$_POST['wallpaperFromURL'];
     $ext=explode("?",$url);
-    $ext=end(explode(".",$ext[0]));
+    $ext=explode(".",$ext[0]);
+    $ext=end($ext);
     $rest=getDesktopSettings();
     $c="[\"type\"=\"DesktopSettings\"]";
     $oldWname=$_SESSION['Logged'];
@@ -1957,7 +1959,8 @@ if(isset($_POST['uploadKey']))
       }
       else
       {
-        $ext=end(explode(".",$name));
+        $ext=explode(".",$name);
+        $ext=end($ext);
         $rest=getDesktopSettings();
         $c="[\"type\"=\"DesktopSettings\"]";
         $oldWname=$_SESSION['Logged'];
@@ -2027,6 +2030,7 @@ if(isset($_POST['appContextPaste']) && !empty($_POST['appContextPaste']))
   $destinationdirectory=$arr[(count($arr)-1)];
   $i=2;//Ignore Type , Source and Destination
   $fs=0;
+  $items=array();
   while($i<count($arr)-1)
   {
     $items[]=$arr[$i];
@@ -2371,7 +2375,8 @@ if($dh=@opendir($dir))
         {
           $c="";
           global $ImgExt;
-          $ext=end(explode(".",$file));
+          $ext=explode(".",$file);
+          $ext=end($ext);
           if(in_array($ext,$ImgExt))
           {
             $c="imageViewer(\"".urlencode($dir.$file)."\")";
@@ -2517,6 +2522,10 @@ if($rei!="")
 ?>
 <script>
   menuInstalledApps();
+  if(window.history.replaceState)
+  {
+    window.history.replaceState(null,null,window.location.href);
+  }
 </script>
 </body>
 </html>

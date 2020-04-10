@@ -112,7 +112,7 @@
   }
   function getFilesInDirectory($p)
   {
-    $files='';
+    $files=array();
     if($dh=@opendir($p))
     {
       while(($file=@readdir($dh))!=false)

@@ -44,6 +44,7 @@ function putImage($url,$type)
   $url='data:image/'.$type.';base64,'.$imageData;
   echo "<div class='impre ".$class."' onclick=\"showImage('".$url."','".$imagecounter."');\" id='image_".$imagecounter."' attr_num='".$imagecounter."' style='background-image:url(\"".$url."\");background-size:contain;'></div>";
 }
+$ImgExt=array();
 $ImgExt[]="jpg";
 $ImgExt[]="jpeg";
 $ImgExt[]="svg";
@@ -73,7 +74,8 @@ function getImage($x)
       }
       else
       {
-        $ext=end(explode(".",$file));
+        $ext=explode(".",$file);
+        $ext=end($ext);
         if($ext=="svg")
         {
           putImage($dir.$x.$file,"svg+xml");

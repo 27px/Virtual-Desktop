@@ -486,7 +486,8 @@ $alreadyregistered=0;
       {
         $name=$_FILES["profilepicture"]["name"];
         $name=basename($name);
-        $ext=end(explode(".",$name));
+        $ext=explode(".",$name);
+        $ext=end($ext);
         $tmp=$_FILES["profilepicture"]["tmp_name"];
         $size=$_FILES["profilepicture"]["size"];
         $error=$_FILES["profilepicture"]["error"];

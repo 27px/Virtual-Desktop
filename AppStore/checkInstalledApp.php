@@ -16,6 +16,8 @@ function checkInstalledApp()
     {
       $inversion=array();
     }
+    $r=array();
+    $v=array();
     $r[]=5;//File Manager // Already Installed
     $v[]=1;//File Manager // Version
     $apps=getAppsInDirectory($dir);

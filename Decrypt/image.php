@@ -48,7 +48,8 @@ if(isset($_SESSION['Logged']))
           $url=urldecode($_GET['getFile']);
           $plaintext=@file_get_contents($url);
 					$imageData=base64_encode($plaintext);
-					$ext=end(explode(".",$url));
+					$ext=explode(".",$url);
+					$ext=end($ext);
 					if($_SESSION['Logged']!="administrator@gmail.com")
 					{
 						$password='altindexedoffsetifiedstringsinteger'.$_SESSION['Logged'];

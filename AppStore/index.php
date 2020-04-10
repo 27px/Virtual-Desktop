@@ -208,6 +208,7 @@ function _(id)
         {
           if($row=mysqli_fetch_row($result))
           {
+            $xv=array();
             $xv["Description"]="description";//5
             $xv["Keyword1"]="keyword1";//6
             $xv["Keyword2"]="keyword2";//7
@@ -221,6 +222,7 @@ function _(id)
             $xv["Max-Height"]="maxheight";//16
             $xl=count($xv);
             $i=0;
+            $xr=array();
             $xr[]=5;
             $xr[]=6;
             $xr[]=7;
@@ -279,7 +281,9 @@ function _(id)
         if($n>0)
         {
           $row=mysqli_fetch_row($result);
-          $newIcon="icon_".$appname."_".$row[0].".".end(explode(".",$name));
+          $tmpx=explode(".",$name);
+          $tmpx=end($tmpx);
+          $newIcon="icon_".$appname."_".$row[0].".".$tmpx;
           $xsr=getcwd()."/icon/";
           $d=$xsr;
           if(!move_uploaded_file($tmp,$d.$newIcon)==true)

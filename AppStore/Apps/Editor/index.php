@@ -74,6 +74,7 @@ $num="";
 <html>
 <?php
 //Image Array
+$ImgExt=array();
 $ImgExt[]="jpg";
 $ImgExt[]="jpeg";
 $ImgExt[]="svg";
@@ -320,8 +321,10 @@ else
 
   if($url!="")
   {
-    $FileName=end(explode("/",$url));
-    $FileExt=end(explode(".",$FileName));
+    $FileName=explode("/",$url);
+    $FileName=end($FileName);
+    $FileExt=explode(".",$FileName);
+    $FileExt=end($FileExt);
     $FileType=strtolower($FileExt);
     $FileExt=".".$FileExt;
     $fileModifiedDate=date("d/F/Y H:i:s", filemtime($url));
@@ -350,7 +353,7 @@ else
   }
   function getDirData($d)
   {
-    $files='';
+    $files=array();
     if($dh=opendir($d))
     {
       while(($file=readdir($dh))!=false)
@@ -379,7 +382,8 @@ else
         }
         else
         {
-          $e=end(explode(".",$file));
+          $e=explode(".",$file);
+          $e=end($e);
           if($e=="fcz")
           {
             continue;
@@ -402,7 +406,8 @@ else
     {
       $cx=$f[$i];
       $cx=str_replace("\\","/",$cx);
-      $file=end(explode("/",$cx));
+      $file=explode("/",$cx);
+      $file=end($file);
       if(is_dir($d.$file))
       {
         ?>
@@ -425,12 +430,13 @@ else
       else
       {
         //File
-        $ext=end(explode(".",$file));
+        $ext=explode(".",$file);
+        $ext=end($ext);
         ?>
           <div class="directory" onclick="')">
             <div class="xtcontainer" onclick="togglefolder(event,this);" ondblclick="openfile('<?php echo $d.$file."','".$ext; ?>');" tabindex="0">
               <div class="xtitle">
-                <div class="str"><?php echo strtoupper(end(explode(".",$file))); ?></div>
+                <div class="str"><?php $temp=explode(".",$file); $temp=end($temp); echo strtoupper($temp); ?></div>
                 <span class="xdtitle"><?php echo $file; ?></span>
               </div>
             </div>
@@ -1140,7 +1146,7 @@ function updateStatus()
     Size="Too Large";
   }
   document.getElementById('fname').innerHTML="<?php echo $FileName; ?>";
-  document.getElementById('fpath').innerHTML="Root<?php if($url!="") echo end(explode($_SESSION['Logged'],$url));else echo "/"; ?>";
+  document.getElementById('fpath').innerHTML="Root<?php if($url!=""){$tmp=explode($_SESSION['Logged'],$url); echo end($tmp);} else echo "/"; ?>";
   document.getElementById('fsize').innerHTML=Size;
   document.getElementById('fsizeb').innerHTML=document.getElementById('txt').value.length+" B";
   document.getElementById('ftype').innerHTML="<?php echo strtoupper($FileType); ?>";
@@ -1646,6 +1652,10 @@ function setMessage(type,message)
   ?>
 	keychanged(0);
   changePreview(document.getElementById("hidePreviewButton"));
+  if(window.history.replaceState)
+  {
+    window.history.replaceState(null,null,window.location.href);
+  }
 </script>
 </body>
 </html>

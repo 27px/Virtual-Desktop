@@ -12,7 +12,8 @@ else if(isset($_GET['download']))
 		if(file_exists(($_GET['download'])))
 		{
 			$file_url=str_replace("\\","/",$_GET['download']);
-			$file_name = end(explode("/",$file_url));
+			$file_name=explode("/",$file_url);
+			$file_name=end($file_name);
 			set_time_limit(0);
 			header("Content-disposition: attachment; filename=\"".$file_name."\"");
 			$plaintext=@file_get_contents($file_url);

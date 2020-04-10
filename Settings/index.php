@@ -20,6 +20,7 @@ if(isset($_POST['logout']) && $_POST['logout']==1)
 $inversion="";
 $ser="/Root/fCLOUD/User/Desktop/".$dir;
 $dir=$_SERVER['DOCUMENT_ROOT'].parse_url($ser,PHP_URL_PATH)."/";
+require_once("../config/root.php");
 if(!@is_dir($dir))
 {
   global $root;
@@ -52,11 +53,14 @@ if(empty(mysqli_fetch_array($conn->query("SHOW TABLES LIKE 'Apps'"))))
   echo "<script>setTimeout(function(){setMessage(\"error\",\"Table not Found.\");},".($msgcount*1500).");</script>";
   die();
 }
+$xroot=array();
+$darray=array();
+$karray=array();
 function duplicate($d)
 {
   global $darray;
   global $karray;
-  global $root;
+  global $xroot;
   if($dh=opendir($d))
   {
     while(($file=readdir($dh))!=false)
@@ -71,7 +75,7 @@ function duplicate($d)
       }
       else
       {
-        $root[]=$d;
+        $xroot[]=$d;
         $darray[]="/".$file;
         $karray[]=sha1_file($d."/".$file);
       }
@@ -89,18 +93,18 @@ function findDuplicate($dir)
   $dup=array();
   global $darray;
   global $karray;
-  global $root;
+  global $xroot;
   if(count($karray)>1)
   {
     while($i<count($karray))
     {
       if(array_key_exists($karray[$i],$dup))
       {
-        $dup[$karray[$i]].=$root[$i].$darray[$i]."|";
+        $dup[$karray[$i]].=$xroot[$i].$darray[$i]."|";
       }
       else
       {
-        $dup[$karray[$i]]=$root[$i].$darray[$i]."|";
+        $dup[$karray[$i]]=$xroot[$i].$darray[$i]."|";
       }
       $i++;
     }
@@ -118,6 +122,7 @@ function findDuplicate($dir)
 }
 function abstorelpath($path)
 {
+  global $root;
   if($_SESSION['Logged']=="administrator@gmail.com")
   {
     return $path;
@@ -1328,7 +1333,9 @@ else if(isset($_POST['analyse']) && !empty($_POST['analyse']))
     }
     else
     {
-      $ext=end(explode(".",basename($k)));
+      $tmpy=basename($k);
+      $tmpy=explode(".",$tmpy);
+      $ext=end($tmpy);
       if($ext=="fcz")
       {
         $type="App";
@@ -1382,7 +1389,9 @@ else if(isset($_POST['analyse']) && !empty($_POST['analyse']))
         }
         else
         {
-          $ext=end(explode(".",basename($v)));
+          $tmpx=basename($v);
+          $tmpx=explode(".",$tmpx);
+          $ext=end($tmpx);
           if($ext=="fcz")
           {
             $type="App";
@@ -1520,6 +1529,7 @@ else if(isset($_POST['aClock']) && !empty($_POST['aClock']))
   {
     $x="#FFFFFF";
     $r="#FFFFFF";
+    $a=array();
     $a[]="00";
     $a[]="80";
     $a[]="FF";
@@ -1667,5 +1677,11 @@ else
   <input type="hidden" id="dClock" name="dClock" value="" />
 </form>
 <div class="loading" id="loading">Loading</div>
+<script>
+  if(window.history.replaceState)
+  {
+    window.history.replaceState(null,null,window.location.href);
+  }
+</script>
 </body>
 </html>

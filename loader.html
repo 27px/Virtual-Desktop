@@ -1,0 +1,241 @@
+<html>
+  <head>
+    <style>
+      *
+      {
+        padding:0;
+        margin:0;
+      }
+      body
+      {
+        background:#000000;
+        --w:40vmin;
+        --u:5px;
+        --uv:calc(var(--u) * 5);
+      }
+      @keyframes rotate
+      {
+        0%
+        {
+          transform:translate(-50%,-50%) rotate(0deg);
+        }
+        100%
+        {
+          transform:translate(-50%,-50%) rotate(360deg);
+        }
+      }
+      div.wrapper
+      {
+        position:absolute;
+        top:50%;
+        left:50%;
+      }
+      div.wrapper:nth-child(1)
+      {
+        animation:rotate 5s linear infinite normal;
+      }
+      div.wrapper:nth-child(2)
+      {
+        animation:rotate 4.7s linear infinite normal;
+      }
+      div.wrapper:nth-child(3)
+      {
+        animation:rotate 4.4s linear infinite normal;
+      }
+      div.wrapper:nth-child(4)
+      {
+        animation:rotate 4.1s linear infinite normal;
+      }
+      div.wrapper:nth-child(5)
+      {
+        animation:rotate 3.8s linear infinite normal;
+      }      div.wrapper:nth-child(1) div.cube
+      {
+        width:calc(var(--w) - var(--uv));
+        height:calc(var(--w) - var(--uv));
+      }
+      div.wrapper:nth-child(2) div.cube
+      {
+        width:calc(var(--w) - (var(--uv) * 2.5));
+        height:calc(var(--w) - (var(--uv) * 2.5));
+      }
+      div.wrapper:nth-child(3) div.cube
+      {
+        width:calc(var(--w) - (var(--uv) * 3.9));
+        height:calc(var(--w) - (var(--uv) * 3.9));
+      }
+      div.wrapper:nth-child(4) div.cube
+      {
+        width:calc(var(--w) - (var(--uv) * 5.3));
+        height:calc(var(--w) - (var(--uv) * 5.3));
+      }
+      div.wrapper:nth-child(5) div.cube
+      {
+        width:calc(var(--w) - (var(--uv) * 6.6));
+        height:calc(var(--w) - (var(--uv) * 6.6));
+      }      div.wrapper:nth-child(1) div.cube::before,div.wrapper:nth-child(1) div.cube::after
+      {
+        width:calc(var(--u) * 3);
+        height:calc(var(--u) * 3);
+      }
+      div.wrapper:nth-child(2) div.cube::before,div.wrapper:nth-child(2) div.cube::after
+      {
+        width:calc(var(--u) * 2.7);
+        height:calc(var(--u) * 2.7);
+      }
+      div.wrapper:nth-child(3) div.cube::before,div.wrapper:nth-child(3) div.cube::after
+      {
+        width:calc(var(--u) * 2.4);
+        height:calc(var(--u) * 2.4);
+      }
+      div.wrapper:nth-child(4) div.cube::before,div.wrapper:nth-child(4) div.cube::after
+      {
+        width:calc(var(--u) * 2.1);
+        height:calc(var(--u) * 2.1);
+      }
+      div.wrapper:nth-child(5) div.cube::before,div.wrapper:nth-child(5) div.cube::after
+      {
+        width:calc(var(--u) * 1.8);
+        height:calc(var(--u) * 1.8);
+      }
+      div.wrapper:nth-child(1) div.cube::before,div.wrapper:nth-child(1) div.cube::after
+      {
+        background:#FFFFFF;
+      }
+      div.wrapper:nth-child(2) div.cube::before,div.wrapper:nth-child(2) div.cube::after
+      {
+        background:#CFCFCF;
+      }
+      div.wrapper:nth-child(3) div.cube::before,div.wrapper:nth-child(3) div.cube::after
+      {
+        background:#9F9F9F;
+      }
+      div.wrapper:nth-child(4) div.cube::before,div.wrapper:nth-child(4) div.cube::after
+      {
+        background:#6F6F6F;
+      }
+      div.wrapper:nth-child(5) div.cube::before,div.wrapper:nth-child(5) div.cube::after
+      {
+        background:#4F4F4F;
+      }
+      div.cube
+      {
+        position:absolute;
+        top:50%;
+        left:50%;
+        transform:translate(-50%,-50%) rotate(0deg);
+      }
+      div.cube::before,div.cube::after
+      {
+        content:"";
+        position:absolute;
+        border-radius:50%;
+      }
+      div.cube::before
+      {
+        top:0;
+        left:0;
+        transform:translate(-50%,-50%);
+      }
+      div.cube::after
+      {
+        bottom:0;
+        right:0;
+        transform:translate(50%,50%);
+      }
+      div.cube:nth-child(1)
+      {
+        transform:translate(-50%,-50%) rotate(20deg);
+      }
+      div.cube:nth-child(2)
+      {
+        transform:translate(-50%,-50%) rotate(40deg);
+      }
+      div.cube:nth-child(3)
+      {
+        transform:translate(-50%,-50%) rotate(60deg);
+      }
+      div.cube:nth-child(4)
+      {
+        transform:translate(-50%,-50%) rotate(80deg);
+      }
+      div.cube:nth-child(5)
+      {
+        transform:translate(-50%,-50%) rotate(100deg);
+      }
+      div.cube:nth-child(6)
+      {
+        transform:translate(-50%,-50%) rotate(120deg);
+      }
+      div.cube:nth-child(7)
+      {
+        transform:translate(-50%,-50%) rotate(140deg);
+      }
+      div.cube:nth-child(8)
+      {
+        transform:translate(-50%,-50%) rotate(160deg);
+      }
+      div.cube:nth-child(9)
+      {
+        transform:translate(-50%,-50%) rotate(180deg);
+      }
+    </style>
+  </head>
+  <body>
+    <div class="wrapper">
+      <div class='cube'></div>
+      <div class='cube'></div>
+      <div class='cube'></div>
+      <div class='cube'></div>
+      <div class='cube'></div>
+      <div class='cube'></div>
+      <div class='cube'></div>
+      <div class='cube'></div>
+      <div class='cube'></div>
+    </div>
+    <div class="wrapper">
+      <div class='cube'></div>
+      <div class='cube'></div>
+      <div class='cube'></div>
+      <div class='cube'></div>
+      <div class='cube'></div>
+      <div class='cube'></div>
+      <div class='cube'></div>
+      <div class='cube'></div>
+      <div class='cube'></div>
+    </div>
+    <div class="wrapper">
+      <div class='cube'></div>
+      <div class='cube'></div>
+      <div class='cube'></div>
+      <div class='cube'></div>
+      <div class='cube'></div>
+      <div class='cube'></div>
+      <div class='cube'></div>
+      <div class='cube'></div>
+      <div class='cube'></div>
+    </div>
+    <div class="wrapper">
+      <div class='cube'></div>
+      <div class='cube'></div>
+      <div class='cube'></div>
+      <div class='cube'></div>
+      <div class='cube'></div>
+      <div class='cube'></div>
+      <div class='cube'></div>
+      <div class='cube'></div>
+      <div class='cube'></div>
+    </div>
+    <div class="wrapper">
+      <div class='cube'></div>
+      <div class='cube'></div>
+      <div class='cube'></div>
+      <div class='cube'></div>
+      <div class='cube'></div>
+      <div class='cube'></div>
+      <div class='cube'></div>
+      <div class='cube'></div>
+      <div class='cube'></div>
+    </div>
+  </body>
+</html>

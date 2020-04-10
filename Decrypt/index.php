@@ -58,7 +58,9 @@ if(isset($_SESSION['Logged']))
         else
         {
           $url=urldecode($_GET['getFile']);
-					$ext=strtolower(end(explode(".",$url)));
+					$ext=explode(".",$url);
+					$ext=end($ext);
+					$ext=strtolower($ext);
 					if(($ext=="zip" || $ext=="rar") || ($ext=="mp3" || $ext=="mp4"))
 					{
 						die("<div class=\"errhead\">Sorry, this File type is currently unsupported.</div><div class=\"errsubhead\">We are working on it !</div>");

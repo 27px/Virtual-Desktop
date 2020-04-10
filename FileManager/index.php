@@ -16,7 +16,7 @@ $dir=$_SESSION['Logged'];
 require_once("../config/root.php");
 function getDirData($d)
 {
-  $files='';
+  $files=array();
   if($dh=@opendir($d))
   {
     while(($file=@readdir($dh))!=false)
@@ -45,7 +45,8 @@ function getDirData($d)
       }
       else
       {
-        $e=end(explode(".",$file));
+        $e=explode(".",$file);
+        $e=end($e);
         if($e=="fcz")
         {
           continue;
@@ -57,6 +58,7 @@ function getDirData($d)
   return $files;
 }
 //Admin-Location
+$userArray=array();
 $userArray[]="Contacts";
 $userArray[]="Desktop";
 $userArray[]="Documents";
@@ -208,7 +210,8 @@ function getContentsFromDirectory($d)
   {
     $cx=$f[$i];
     $cx=str_replace("\\","/",$cx);
-    $file=end(explode("/",$cx));
+    $file=explode("/",$cx);
+    $file=end($file);
     if(@is_dir($d.$file))
     {
       ?>
@@ -231,12 +234,13 @@ function getContentsFromDirectory($d)
     else
     {
       //File
-      $ext=end(explode(".",$file));
+      $ext=explode(".",$file);
+      $ext=end($ext);
       ?>
         <div class="directory" onclick="">
           <div class="xtcontainer" onclick="togglefolder(event,this);" tabindex="0">
             <div class="xtitle">
-              <div class="str"><?php echo strtoupper(end(explode(".",$file))); ?></div>
+              <div class="str"><?php $tmpx=explode(".",$file); $tmpx=end($tmpx); echo strtoupper($tmpx); ?></div>
               <span class="xdtitle"><?php echo $file; ?></span>
             </div>
           </div>
@@ -330,6 +334,7 @@ if(!authorised($dir,$_SESSION['Logged']))
   die("<div style=\"color:#FF5050;font-size:40px;border-bottom:1px solid #FF0000;padding:20px;margin:100px;text-align:center;\">You are not Authorised to access this Folder.</div>");
 }
 //Image Extensions
+$ImgExt=array();
 $ImgExt[]="jpg";
 $ImgExt[]="jpeg";
 $ImgExt[]="svg";
@@ -3517,6 +3522,7 @@ if(isset($_POST['appContextPaste']) && !empty($_POST['appContextPaste']))
   $destinationdirectory=$arr[(count($arr)-1)];
   $i=2;//Ignore Type , Source and Destination
   $fs=0;
+  $items=array();
   while($i<count($arr)-1)
   {
     $items[]=$arr[$i];
@@ -3541,7 +3547,9 @@ if(isset($_POST['appContextRename']) && !empty($_POST['appContextRename']))
   {
     $old=$v[0];
     $new=$v[1];
-    if(strtolower(end(explode(".",$new)))=="fcz")
+    $tmpy=explode(".",$new);
+    $tmpy=end($tmpy);
+    if(strtolower($tmpy)=="fcz")
     {
       $msgcount++;
       echo "<script>setTimeout(function(){setMessage(\"error\",\"Forbidden Extension.\");},".($msgcount*1500).");console.log('Forbidden File Extension : fcz')</script>";
@@ -3766,7 +3774,8 @@ else if($dh=@opendir($dir))
     }
     else
     {
-      $ext=end(explode(".",$file));
+      $ext=explode(".",$file);
+      $ext=end($ext);
       //echo "<br>".$dir."/".$file." : ".file_exists($dir."/".$file);
       $skipthisfile=0;
       if(@is_dir($dir."/".$file))
@@ -3792,7 +3801,8 @@ else if($dh=@opendir($dir))
         {
           $c="";
           global $ImgExt;
-          $ext=end(explode(".",$file));
+          $ext=explode(".",$file);
+          $ext=end($ext);
           if(in_array($ext,$ImgExt))
           {
             $c="imageViewer(\"".urlencode($dir.$file)."\")";
@@ -3924,6 +3934,10 @@ if($rei!="")
 ?>
 <script>
   menuAllFilesAndFolders();
+  if(window.history.replaceState)
+  {
+    window.history.replaceState(null,null,window.location.href);
+  }
 </script>
 </body>
 </html>

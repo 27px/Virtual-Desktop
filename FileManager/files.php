@@ -28,7 +28,8 @@ function showContents($dir)
 			}
 			else
 			{
-				$ext=end(explode(".",$file));
+				$ext=explode(".",$file);
+				$ext=end($ext);
 				$s=filesize($dir."/".$file);
 				$Size=$s;
 				$byte=array(" B"," KB"," MB"," GB"," TB");
