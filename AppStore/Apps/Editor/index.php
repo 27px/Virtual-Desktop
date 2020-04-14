@@ -993,7 +993,7 @@ div.nb
 </style>
 <script>
 var ignoreScrollEvents=false;
-var UnsupportedExt=["jpg","jpeg","svg","png","gif","bmp","svgz","tiff","exif","ico","zip","rar","docx","doc","xls","xlsx","ppt","pptx","pdf","psd","ai"];
+var UnsupportedExt=["jpg","jpeg","png","gif","bmp","svgz","tiff","exif","ico","zip","rar","docx","doc","xls","xlsx","ppt","pptx","pdf","psd","ai"];
 function _(id)
 {
   return document.getElementById(id);
