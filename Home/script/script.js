@@ -127,39 +127,3 @@ function toggleMenu(list)
     list.add("collapse");
   }
 }
-// function proParallax(event)
-// {
-//   var x=event.clientX,y=event.clientY;
-//   var sx=document.body.clientWidth,sy=document.body.clientHeight;
-//   var px=(x * 100)/sx,py=(y * 100)/sy;
-//   if(px>50)
-//   {
-//     px=100 - px;
-//   }
-//   if(py>50)
-//   {
-//     py=100 - py;
-//   }
-//   px=pf(px.toFixed(2));
-//   py=pf(py.toFixed(2));
-//   var pa=(px+py)/2;
-//   pa=pf(pa.toFixed(2));
-//   pa=pa.toFixed(2);
-//   pa=pf(pa);
-//   console.log(pa);
-//   var p=document.getElementsByClassName("parallax"),i=0,n=p.length,x;
-//   for(i=0,x=1;i<n;i++,x+=0.1)
-//   {
-//     // p[i].style.backgroundSize=(pa * x)+"%";
-//     p[i].style.transform="scale("+(1+(pa*x/100))+","+(1+(pa*x/100))+")";
-//   }
-// }
-// function resetParallax()
-// {
-//   var p=document.getElementsByClassName("parallax"),i=0,n=p.length;
-//   for(i=0,x=1;i<n;i++,x+=0.25)
-//   {
-//     p[i].style.backgroundSize="cover";
-//     p[i].style.transition="";
-//   }
-// }
