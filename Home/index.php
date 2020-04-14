@@ -28,55 +28,55 @@ if((isset($_POST['LogOut']) && $_POST['LogOut']=="true") || (isset($_GET['logout
   </head>
   <body onscroll="parallax();">
     <?php
-    if(isset($_POST['message']) && !empty($_POST['message']))
-    {
-      if(isset($_POST['email']) && !empty($_POST['email']))
+      if(isset($_POST['message']) && !empty($_POST['message']))
       {
-        if(isset($_POST['name']) && !empty($_POST['name']))
+        if(isset($_POST['email']) && !empty($_POST['email']))
         {
-          $pm="";
-          require_once("../config/database.php");
-          $table_name="Feedback";
-          $useDB="USE $database";
-          $selectAllFromTable="SELECT * FROM $table_name";
-          $conn=new mysqli($servername, $username, $password);
-          if(mysqli_connect_error())
+          if(isset($_POST['name']) && !empty($_POST['name']))
           {
-            $pm="Database connection failed : ".mysqli_connect_error();
-          }
-          else if(!(empty(mysqli_fetch_array($conn->query("SHOW DATABASES LIKE '".$database."' ")))))
-          {
-            if($conn->query($useDB)===TRUE)
+            $pm="";
+            require_once("../config/database.php");
+            $table_name="Feedback";
+            $useDB="USE $database";
+            $selectAllFromTable="SELECT * FROM $table_name";
+            $conn=new mysqli($servername, $username, $password);
+            if(mysqli_connect_error())
             {
-              if(!(empty(mysqli_fetch_array($conn->query("SHOW TABLES LIKE '".$table_name."' ")))))
+              $pm="Database connection failed : ".mysqli_connect_error();
+            }
+            else if(!(empty(mysqli_fetch_array($conn->query("SHOW DATABASES LIKE '".$database."' ")))))
+            {
+              if($conn->query($useDB)===TRUE)
               {
-                if($conn->query("INSERT INTO `".$table_name."`(`Name`,`EMail`,`Message`) VALUES('".$_POST['name']."','".$_POST['email']."','".$_POST['message']."')")==true)
+                if(!(empty(mysqli_fetch_array($conn->query("SHOW TABLES LIKE '".$table_name."' ")))))
                 {
-                  $pm="Message sent successfully !";
+                  if($conn->query("INSERT INTO `".$table_name."`(`Name`,`EMail`,`Message`) VALUES('".$_POST['name']."','".$_POST['email']."','".$_POST['message']."')")==true)
+                  {
+                    $pm="Message sent successfully !";
+                  }
+                  else
+                  {
+                    $pm="Message not sent, Try Again !";
+                  }
                 }
                 else
                 {
-                  $pm="Message not sent, Try Again !";
+                  $pm="Error Table does't exist : ".$conn->error." Please contact Admin.";
                 }
               }
               else
               {
-                $pm="Error Table does't exist : ".$conn->error." Please contact Admin.";
+                $pm="Error changing Database : ".$conn->error;
               }
             }
             else
             {
-              $pm="Error changing Database : ".$conn->error;
+              $pm="Error Database does't exist : ".$conn->error." Please contact Admin.";
             }
+            echo "<div class=\"popupbg\" id=\"popupbg\"></div><div class='popup' id='popup'><div class=\"messagetitle\">Message</div><div class=\"message\">".$pm."</div><div class='close' onclick=\"_('popup').parentNode.removeChild(_('popup'));_('popupbg').parentNode.removeChild(_('popupbg'));\">Close</div><div class='xclose' onclick=\"_('popup').parentNode.removeChild(_('popup'));_('popupbg').parentNode.removeChild(_('popupbg'));\">&#10006;</div></div>";
           }
-          else
-          {
-            $pm="Error Database does't exist : ".$conn->error." Please contact Admin.";
-          }
-          echo "<div class=\"popupbg\" id=\"popupbg\"></div><div class='popup' id='popup'><div class=\"messagetitle\">Message</div><div class=\"message\">".$pm."</div><div class='close' onclick=\"_('popup').parentNode.removeChild(_('popup'));_('popupbg').parentNode.removeChild(_('popupbg'));\">Close</div><div class='xclose' onclick=\"_('popup').parentNode.removeChild(_('popup'));_('popupbg').parentNode.removeChild(_('popupbg'));\">&#10006;</div></div>";
         }
       }
-    }
     ?>
     <div class="header">
       <div class="navbar" id="menubar">
