@@ -174,6 +174,7 @@ else//dark
   {
   	if($log=="administrator@gmail.com")
   	return true;
+    $path=realpath($path);
   	$ph=str_replace("\\","/",$path);
   	$p=explode("/",$ph);
   	$i=0;
@@ -408,7 +409,7 @@ else
       $cx=str_replace("\\","/",$cx);
       $file=explode("/",$cx);
       $file=end($file);
-      if(is_dir($d.$file))
+      if(is_dir($d."/".$file))
       {
         ?>
           <div class="directory">
@@ -419,7 +420,7 @@ else
               </div>
               <div class="dcontents">
                 <?php
-                  getContentsFromDirectory($d.$file."/");
+                  getContentsFromDirectory($d."/".$file."/");
                 ?>
                 <hr class="bb"/>
               </div>
@@ -434,7 +435,7 @@ else
         $ext=end($ext);
         ?>
           <div class="directory" onclick="')">
-            <div class="xtcontainer" onclick="togglefolder(event,this);" ondblclick="openfile('<?php echo $d.$file."','".$ext; ?>');" tabindex="0">
+            <div class="xtcontainer" onclick="togglefolder(event,this);" ondblclick="openfile('<?php echo $d."/".$file."','".$ext; ?>');" tabindex="0">
               <div class="xtitle">
                 <div class="str"><?php $temp=explode(".",$file); $temp=end($temp); echo strtoupper($temp); ?></div>
                 <span class="xdtitle"><?php echo $file; ?></span>
@@ -721,7 +722,7 @@ div.popup div.topbox button.close
 	border:none;
 	outline:none;
 	background-color:transparent;
-  background-image:url("icon_close.svg");
+  background-image:url("Images/icon_close.svg");
 }
 div.popup div.topbox>span.title
 {
@@ -1537,7 +1538,7 @@ function setMessage(type,message)
       </div>
       <textarea class="edtext num" name="Num" id="num" cols=1 readonly onscroll='scrollN()' onfocus="this.blur;"><?php echo $num; ?></textarea>
       <div class="SubContainer">
-        <textarea class="edtext txt" name='cont' id="txt" autofocus onscroll='scrollAll(this,event)' onkeydown='keypressed(event,this)' oninput='keychanged(0)' onkeyup='release(event)' autocorrect='off' autocapitalize='off' spellcheck='false'><?php echo $content; ?></textarea>
+        <textarea class="edtext txt" name='cont' id="txt" autofocus onscroll='scrollAll(this,event)' onkeydown='keypressed(event,this)' oninput='keychanged(0)' onkeyup='release(event)' autocorrect='off' autocapitalize='off' spellcheck='false'><?php echo htmlspecialchars($content); ?></textarea>
         <div class="ResizeButtonContainer" id="hbuttonContainer" onmouseover="showPbutton();" onmouseout="hidePbutton();">
           <input type="button" class="hidePreview" value="<" id="hidePreviewButton" onmouseover="showPbutton();" onmouseout="hidePbutton();" onclick="changePreview(this)">
         </div>
@@ -1639,7 +1640,7 @@ function setMessage(type,message)
 </div>
 
 <script>
-  document.getElementsByTagName('title')[0].innerHTML='Editor : <?php echo $FileName; ?>';
+  document.title='Editor : <?php echo $FileName; ?>';
   if(window.history.replaceState)
   {
     window.history.replaceState(null,null,window.location.href);

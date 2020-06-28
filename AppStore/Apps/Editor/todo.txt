@@ -1,0 +1,30 @@
+bug:
+menu opening shortcuts works only from textarea focus.
+set shortcuts depending on browsers
+
+
+todo:
+
+autocomplete quotes
+autocomplete keywords
+textarea & numberline scroll
+directory viewer collapse all,expand recursively on context menu
+encrypt decrypt as external file opearations
+menu operations
+implement undo,redo,cut,copy,paste
+space instead of tab & number of spaces
+background-color toggler for iframe
+full screen preview iframe
+preload icons
+svg to <object> for interactiveness
+file->close
+confirmation before close or opening another file
+link to file operations in desktop
+bottom bar for line number, col
+search, replace, regex, goto line.
+top bar and multiple file support
+color adjustment & theme, dark mode/light mode
+access preview from menu for mobile devices that does not support hover
+responsive @media
+cut copy paste select etc
+directory loader load only contents not wrapper and set refresh icon position correctly for sm devices

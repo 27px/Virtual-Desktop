@@ -10,6 +10,7 @@ if((isset($_POST['LogOut']) && $_POST['LogOut']=="true") || (isset($_GET['logout
 <html>
   <head>
     <meta name="viewport" content="width=device-width,initial-scale=1.0,user-scalable=no">
+    <title>fCLOUD</title>
     <link rel="preload" as="image" type="image/png" href="Images/Parallax/1.png">
     <link rel="preload" as="image" type="image/png" href="Images/Parallax/2.png">
     <link rel="preload" as="image" type="image/png" href="Images/Parallax/3.png">

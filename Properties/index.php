@@ -32,6 +32,7 @@
   }
   function authorised($path,$log)
   {
+    $path=realpath($path);
   	if($log=="administrator@gmail.com")
   	return true;
   	$ph=str_replace("\\","/",$path);
