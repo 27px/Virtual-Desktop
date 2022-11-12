@@ -18,7 +18,7 @@ if(isset($_POST['logout']) && $_POST['logout']==1)
   header('Location:../Home/index.php');
 }
 $inversion="";
-$ser="/Root/fCLOUD/User/Desktop/".$dir;
+$ser="/Virtual-Desktop/User/Desktop/".$dir;
 $dir=$_SERVER['DOCUMENT_ROOT'].parse_url($ser,PHP_URL_PATH)."/";
 require_once("../config/root.php");
 if(!@is_dir($dir))
